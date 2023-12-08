@@ -55,7 +55,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/receipt" />
+                android:src="@drawable/receipt" />
 
             <TextView
                 android:id="@+id/textView8"
@@ -96,7 +96,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/receipt" />
+                android:src="@drawable/receipt" />
 
             <TextView
                 android:id="@+id/textView4"
@@ -137,7 +137,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/receipt" />
+                android:src="@drawable/receipt" />
 
             <TextView
                 android:id="@+id/textView6"
@@ -178,7 +178,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/receipt" />
+                android:src="@drawable/receipt" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -219,7 +219,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/store" />
+                android:src="@drawable/receipt" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -260,7 +260,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/receipt" />
+                android:src="@drawable/receipt" />
 
             <TextView
                 android:id="@+id/textView5"
@@ -301,7 +301,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/receipt" />
+                android:src="@drawable/receipt" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -327,5 +327,5 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/createAssets"
         app:layout_constraintTop_toTopOf="@+id/createAssets"
-        tools:visibility="invisible" />
+        android:visibility="invisible" />
 </androidx.constraintlayout.widget.ConstraintLayout>
