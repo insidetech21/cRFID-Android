@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InboundPage_Activity">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:title="Inbound Page"
+            android:titleTextColor="@android:color/white"
+            android:contentInsetStart="0dp"
+            android:contentInsetLeft="0dp"
+            android:contentInsetEnd="0dp"
+            android:contentInsetRight="0dp"
+            android:layout_alignParentTop="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/toolbar_back_icon"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/backarrow"
+                    android:layout_gravity="center"
+                    android:contentDescription="@string/back"
+                    android:layout_marginEnd="8dp"/>
+
+            </LinearLayout>
+        </androidx.appcompat.widget.Toolbar>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/toolbar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:padding="8dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    app:cardElevation="2dp"
+                    app:cardCornerRadius="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@drawable/receipt"
+                            android:padding="5dp"
+                            android:contentDescription="@string/goods_receipt"
+                            android:layout_gravity="center"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/goods_receipt1"
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/description_for_good_receipt"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="02dp"
+                    app:cardCornerRadius="8dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal"
+                        android:padding="10dp">
+
+                        <ImageView
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:src="@drawable/rfidtag64"
+                            android:padding="5dp"
+                            android:contentDescription="Print and Reprint"
+                            android:layout_gravity="center"/>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:layout_marginStart="16dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/print_and_reprint"
+                                android:textSize="16sp"
+                                android:textStyle="bold"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/description_for_print_and_reprint"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+    </RelativeLayout>
