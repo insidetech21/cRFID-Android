@@ -7,7 +7,6 @@
     android:padding="16dp"
     tools:context=".MainActivity">
 
-
         <TextView
             android:id="@+id/textViewTitle"
             android:layout_width="match_parent"
@@ -53,7 +52,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="INBOUND"
+                        android:text="@string/inbound"
                         android:textStyle="bold"
                         android:textSize="18sp"
                         android:textColor="@color/black"
@@ -94,7 +93,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="OUTBOUND"
+                            android:text="@string/outbound"
                             android:textStyle="bold"
                             android:textSize="18sp"
                             android:textColor="@color/black"
@@ -108,8 +107,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_below="@id/textViewTitle">
+                    android:gravity="center">
 
                     <!-- Card 1 -->
                     <androidx.cardview.widget.CardView
@@ -135,7 +133,7 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="INTERNAL"
+                                android:text="@string/internal"
                                 android:textStyle="bold"
                                 android:textSize="18sp"
                                 android:textColor="@color/black"
