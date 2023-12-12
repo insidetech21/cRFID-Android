@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Locate_Asset">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#678aa5"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar4" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Locate Asset"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:layout_constraintTop_toTopOf="@id/toolbar3"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar3"
+        app:layout_constraintStart_toStartOf="@id/toolbar3"
+        app:layout_constraintEnd_toEndOf="@id/toolbar3"
+
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/locateRecycler"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar3"
+        android:background="#f7f6fb"
+        tools:listitem="@layout/common_recycler_locate_tag_pair_unpair"
+
+        />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#81abcc"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Warehouse Management System"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="@id/toolbar4"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar4"
+        app:layout_constraintStart_toStartOf="@id/toolbar4"
+        app:layout_constraintEnd_toEndOf="@id/toolbar4"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        />
+</androidx.constraintlayout.widget.ConstraintLayout>
