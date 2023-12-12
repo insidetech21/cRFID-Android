@@ -93,6 +93,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:background="#f7f6fb"
         >
 
         <LinearLayout
@@ -303,7 +304,7 @@
                     />
                 <ImageView
                     android:layout_width="0dp"
-                    android:layout_height="100dp"
+                    android:layout_height="150dp"
                     android:layout_weight="0.5"
                     android:textSize="24sp"
                     android:textStyle="bold"

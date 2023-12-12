@@ -20,7 +20,7 @@ public class HomePage extends AppCompatActivity {
             @Override
             public
             void onClick ( View view ) {
-                Intent intent=new Intent( HomePage.this, Locate_Asset_Details_Page.class );
+                Intent intent=new Intent( HomePage.this, Locate_Asset.class );
                 startActivity(intent);
             }
         } );
