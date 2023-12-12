@@ -114,4 +114,8 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="discrepancy">Discrepancy:</string>
+    <string name="count">Count:</string>
+    <string name="warehouse_management_system">Warehouse Management System</string>
+    <string name="cycle_counting1">Cycle Counting</string>
 </resources>
