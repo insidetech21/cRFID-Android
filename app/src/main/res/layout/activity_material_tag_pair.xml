@@ -34,14 +34,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Warehouse Management System"
-        app:layout_constraintTop_toTopOf="@id/toolbar10"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar10"
-        app:layout_constraintStart_toStartOf="@id/toolbar10"
-        app:layout_constraintEnd_toEndOf="@id/toolbar10"
         android:textColor="@color/white"
-        android:textStyle="bold"
         android:textSize="25sp"
-        />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar10"
+        app:layout_constraintEnd_toEndOf="@id/toolbar10"
+        app:layout_constraintStart_toStartOf="@id/toolbar10"
+        app:layout_constraintTop_toTopOf="@id/toolbar10" />
 
     <TextView
 
@@ -49,25 +48,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Asset Tag Pair"
-        app:layout_constraintTop_toTopOf="@id/toolbar11"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar11"
-        app:layout_constraintStart_toStartOf="@id/toolbar11"
-        app:layout_constraintEnd_toEndOf="@id/toolbar11"
         android:textColor="@color/white"
-        android:textStyle="bold"
         android:textSize="25sp"
-        />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar11"
+        app:layout_constraintEnd_toEndOf="@id/toolbar11"
+        app:layout_constraintStart_toStartOf="@id/toolbar11"
+        app:layout_constraintTop_toTopOf="@id/toolbar11" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/PairButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:background="@drawable/blue_button"
         android:text="Pair"
         android:textColor="@color/white"
-        android:textStyle="bold"
         android:textSize="15sp"
-        android:background="@drawable/blue_button"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/toolbar11"
         app:layout_constraintEnd_toEndOf="@id/toolbar11"
         app:layout_constraintHorizontal_bias="1.0"
