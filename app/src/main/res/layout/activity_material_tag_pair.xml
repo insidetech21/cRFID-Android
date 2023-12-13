@@ -81,5 +81,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar11"
-        tools:listitem="@layout/asset_in_out_recycler_item" />
+        tools:listitem="@layout/common_recycler_locate_tag_pair_unpair" />
 </androidx.constraintlayout.widget.ConstraintLayout>
