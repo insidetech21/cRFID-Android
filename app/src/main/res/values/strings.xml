@@ -28,5 +28,5 @@
     <string name="count" translatable="false">Count:</string>
     <string name="warehouse_management_system" translatable="false">Warehouse Management System</string>
     <string name="cycle_counting1" translatable="false">Physical Inventory</string>
-    <string name="cycle_counting">Cycle Counting</string>
+    <string name="cycle_counting" translatable="false">Cycle Counting</string>
 </resources>
