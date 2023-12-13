@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name" translatable="false">cRFID</string>
-    <string name="c_rfid" translatable="false" >C-RFID</string>
-    <string name="detail" translatable="false" >Detail</string>
+    <string name="c_rfid" translatable="false">C-RFID</string>
+    <string name="detail" translatable="false">Detail</string>
     <string name="po_list" translatable="false">PO List</string>
     <string name="item_detail" translatable="false">Item Detail</string>
     <string name="back" translatable="false">Back</string>
