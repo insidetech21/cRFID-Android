@@ -19,9 +19,6 @@
             android:name=".ReadMaterial"
             android:exported="false" />
         <activity
-            android:name=".asset_in_out_recycler_item"
-            android:exported="false" />
-        <activity
             android:name=".Material_Tag_Pair_Details_Page"
             android:exported="false" />
         <activity
