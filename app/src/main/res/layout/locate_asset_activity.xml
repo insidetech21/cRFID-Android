@@ -28,8 +28,7 @@
         app:layout_constraintTop_toTopOf="@id/toolbar3"
         app:layout_constraintBottom_toBottomOf="@id/toolbar3"
         app:layout_constraintStart_toStartOf="@id/toolbar3"
-        app:layout_constraintEnd_toEndOf="@id/toolbar3"
-        />
+        app:layout_constraintEnd_toEndOf="@id/toolbar3" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/locateRecycler"
@@ -40,9 +39,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar3"
         android:background="#f7f6fb"
-        tools:listitem="@layout/common_recycler_locate_tag_pair_unpair"
-
-        />
+        tools:listitem="@layout/common_recycler_locate_tag_pair_unpair"/>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar4"
@@ -66,6 +63,5 @@
         app:layout_constraintStart_toStartOf="@id/toolbar4"
         app:layout_constraintEnd_toEndOf="@id/toolbar4"
         android:textSize="25sp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
