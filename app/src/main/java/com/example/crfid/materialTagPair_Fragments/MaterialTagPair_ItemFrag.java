@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.example.crfid.Material_Tag_Pair;
 import com.example.crfid.R;
 import com.example.crfid.common.BasicAuthInterceptor;
+import com.example.crfid.common.CommonFunctions;
 import com.example.crfid.data.retrofit.ApiService;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Item;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Response;
@@ -161,9 +162,9 @@ class MaterialTagPair_ItemFrag extends Fragment {
 
                     progressBar.setVisibility ( View.INVISIBLE );
 //                    pleasewait.setVisibility ( View.INVISIBLE );
-                    Toast.makeText ( getContext ( ) ,
-                            "Error code: " + response.code ( ) ,
-                            Toast.LENGTH_SHORT ).show ( );
+                    CommonFunctions.showToast (getContext ( ) ,
+                            "Error code: " + response.code ( )   );
+
                     return;
                 }
 
@@ -202,9 +203,8 @@ class MaterialTagPair_ItemFrag extends Fragment {
 
                 progressBar.setVisibility ( View.INVISIBLE );
 //                pleasewait.setVisibility ( View.INVISIBLE );
-                Toast.makeText ( getContext ( ) ,
-                        "Error code: " + t.getMessage ( ) ,
-                        Toast.LENGTH_SHORT ).show ( );
+                CommonFunctions.showToast ( getContext ( ) ,
+                        "Error code: " + t.getMessage ( )  );
             }
         } );
     }
@@ -284,7 +284,8 @@ class MaterialTagPair_ItemFrag extends Fragment {
                 purchaseOrder.setText ( woTask.getEbeln ( ) );
                 matDocNo.setText ( woTask.getMblnr ( ) );
                 matNo.setText ( woTask.getMatnr ( ) );
-                postingDate.setText ( woTask.getBudatMkpf ( ) );
+                postingDate.setText ( CommonFunctions.convertDate ( woTask.getBudatMkpf ( ) )
+                         );
                 itemView.setOnClickListener ( new View.OnClickListener ( ) {
                     @Override
                     public

@@ -21,6 +21,7 @@ import com.example.crfid.Material_Tag_Pair;
 import com.example.crfid.Material_Tag_Pair_Details_Page;
 import com.example.crfid.R;
 import com.example.crfid.common.BasicAuthInterceptor;
+import com.example.crfid.common.CommonFunctions;
 import com.example.crfid.data.retrofit.ApiService;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Item;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Response;
@@ -210,9 +211,8 @@ class MaterialTagPair_ItemDetail extends Fragment {
 
                     progressBar.setVisibility(View.INVISIBLE);
                     pleasewait.setVisibility(View.INVISIBLE);
-                    Toast.makeText ( getContext ( ) ,
-                            "Error code: " + response.code ( ) ,
-                            Toast.LENGTH_SHORT ).show ( );
+                    CommonFunctions.showToast ( getContext ( ) ,
+                            "Error code: " + response.code ( )  );
                     return;
                 }
 
@@ -255,9 +255,9 @@ class MaterialTagPair_ItemDetail extends Fragment {
 
                 progressBar.setVisibility(View.INVISIBLE);
                 pleasewait.setVisibility(View.INVISIBLE);
-                Toast.makeText ( getContext ( ) ,
-                        "Error code: " + t.getMessage ( ) ,
-                        Toast.LENGTH_SHORT ).show ( );
+
+                CommonFunctions.showToast ( getContext ( ) ,
+                        "Error code: " + t.getMessage ( ) );
             }
         } );
     }
@@ -281,12 +281,13 @@ class MaterialTagPair_ItemDetail extends Fragment {
                 if(!response.isSuccessful ()){
                     progressBar.setVisibility(View.INVISIBLE);
                     pleasewait.setVisibility(View.INVISIBLE);
-                    Toast.makeText(getContext (), "Error in posting: " + response.errorBody(), Toast.LENGTH_SHORT).show();
+                    CommonFunctions.showToast ( getContext (),"Error in posting: " + response.errorBody() );
                     return;
                 }
 
                 progressBar.setVisibility(View.INVISIBLE);
                 pleasewait.setVisibility(View.INVISIBLE);
+
 
                 AlertDialog.Builder builder = new AlertDialog.Builder( getActivity ());
                 builder.setTitle("Data Posted!!");
@@ -295,7 +296,7 @@ class MaterialTagPair_ItemDetail extends Fragment {
                 // Add an "OK" button to dismiss the dialog
                 builder.setPositiveButton("OK", (dialog, which) -> {
 
-
+                    dialog.dismiss ();
                     // Dismiss the dialog
                     getActivity ().finish();
                 });
