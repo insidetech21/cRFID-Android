@@ -16,6 +16,13 @@
         android:theme="@style/Theme.CRFID"
         tools:targetApi="31">
         <activity
+            android:name=".MaterialTagUnpair"
+            android:exported="false" />
+        <activity
+            android:name=".ReadMaterial"
+            android:exported="false" />
+        <activity
+
             android:name=".Material_Tag_Pair_Details_Page"
             android:exported="false" />
         <activity
@@ -53,8 +60,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-
             </intent-filter>
         </activity>
     </application>

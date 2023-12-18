@@ -4,55 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Material_In_Out">
+    tools:context=".ReadMaterial">
 
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cardView3"
-        android:layout_width="0dp"
-        android:layout_height="65dp"
-        app:cardCornerRadius="0dp"
-        app:layout_constraintBottom_toBottomOf="@+id/cardView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/cardView2"
-        app:layout_constraintTop_toTopOf="@+id/cardView2"
-        app:strokeColor="#6C6B6B"
-        app:strokeWidth="2dp">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/textView17"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Discrepancy:"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.181"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.421" />
-
-            <TextView
-                android:id="@+id/textViewDis"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="02"
-                android:textColor="#FFA500"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.786"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.421" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar7"
@@ -78,10 +31,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardView2"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="65dp"
         app:cardCornerRadius="0dp"
-        app:layout_constraintEnd_toStartOf="@+id/cardView3"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar8"
@@ -96,32 +48,31 @@
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Total: "
-                android:textSize="20sp"
+                android:text="Items Scanned: "
+                android:textAllCaps="false"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.446"
+                app:layout_constraintEnd_toStartOf="@+id/textView13"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.421" />
+                app:layout_constraintVertical_bias="0.575" />
 
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="08"
+                android:text="30"
                 android:textColor="#FFA500"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.672"
+                app:layout_constraintHorizontal_bias="0.674"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.421" />
-
-
+                app:layout_constraintVertical_bias="0.575" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -155,7 +106,8 @@
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Asset In-Out"
+        android:text="Read Material"
+        android:textAllCaps="true"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -169,7 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Mark As In"
+        android:text="clear"
         android:textStyle="bold"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="@id/toolbar9"
@@ -187,7 +139,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:padding="10dp"
-        android:text="Mark As Out"
+        android:text="Issue"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/markasin"
         app:layout_constraintEnd_toEndOf="@id/toolbar9"
@@ -204,6 +156,6 @@
         app:layout_constraintBottom_toTopOf="@id/toolbar9"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:listitem="@layout/asset_in_out_recycler_item"
+        tools:listitem="@layout/recycler_read_material_item"
         />
 </androidx.constraintlayout.widget.ConstraintLayout>
