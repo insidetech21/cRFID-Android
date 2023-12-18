@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Material_Tag_Pair">
+    tools:context=".MaterialTagUnpair">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar11"
@@ -29,33 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.tabs.TabLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/tabLayout"
-        app:layout_constraintTop_toBottomOf="@id/toolbar11"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-
-
-        >
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="List"
-            />
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Item"
-            />
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Item Detail"
-            />
-    </com.google.android.material.tabs.TabLayout>
-
     <TextView
         android:id="@+id/textView20"
         android:layout_width="wrap_content"
@@ -74,7 +47,7 @@
         android:id="@+id/textView21"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Asset Tag Pair"
+        android:text="Tag Un-Pair"
         android:textColor="@color/white"
         android:textSize="25sp"
         android:textStyle="bold"
@@ -89,8 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
         android:background="@drawable/blue_button"
-        android:visibility="gone"
-        android:text="Pair"
+        android:text="Un-Pair"
         android:textColor="@color/white"
         android:textSize="15sp"
         android:textStyle="bold"
@@ -100,48 +72,12 @@
         app:layout_constraintStart_toEndOf="@id/textView21"
         app:layout_constraintTop_toTopOf="@id/toolbar11" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPagerTagPAir"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/tabLayout"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        />
-
-<!--    <androidx.recyclerview.widget.RecyclerView-->
-<!--        android:id="@+id/recyclerv"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tabLayout"-->
-<!--        tools:listitem="@layout/common_recycler_locate_tag_pair_unpair" />-->
-
-<!--    <ProgressBar-->
-<!--        android:id="@+id/progressBar"-->
-<!--        style="?android:attr/progressBarStyle"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        android:indeterminateTint="#678aa5"-->
-<!--        />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/pleasewaitTV"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/progressBar"-->
-<!--        app:layout_constraintStart_toStartOf="@id/progressBar"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/progressBar"-->
-<!--        android:layout_marginTop="3dp"-->
-<!--        android:text="Please wait..."-->
-<!--        android:textColor="#678aa5"-->
-<!--        android:textStyle="italic"-->
-<!--        />-->
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar11"
+        tools:listitem="@layout/common_recycler_locate_tag_pair_unpair" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -64,7 +64,7 @@
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/create_material"
                 android:textAllCaps="true"
                 android:textSize="16sp"
@@ -109,7 +109,7 @@
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="Physical Inventory"
                 android:textAllCaps="true"
                 android:textSize="16sp"
@@ -154,7 +154,7 @@
             <TextView
                 android:id="@+id/textView6"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/material_tag_pair"
                 android:textAllCaps="true"
                 android:textSize="16sp"
@@ -201,7 +201,7 @@
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/locate_material"
                 android:textAllCaps="true"
                 android:textSize="16sp"
@@ -246,7 +246,7 @@
             <TextView
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/read_material"
                 android:textAllCaps="true"
                 android:textSize="16sp"
@@ -291,7 +291,7 @@
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/material_issue"
                 android:textAllCaps="true"
                 android:textSize="16sp"
@@ -337,7 +337,7 @@
             <TextView
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/material_tag_unpair"
                 android:textAllCaps="true"
                 android:textSize="16sp"
@@ -372,25 +372,31 @@
                 android:id="@+id/imageView8"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="52dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/print_reprint"
+                app:layout_constraintBottom_toTopOf="@+id/textView9"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textView9"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
+                android:layout_marginBottom="6dp"
+                android:gravity="center"
                 android:text="Print Re-Print"
                 android:textAllCaps="true"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView8" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

@@ -10,15 +10,27 @@ import android.view.View;
 public class HomePage extends AppCompatActivity {
 
 
-    CardView locateCard,assetInOutCard,matTagPair,cycleCounting;
+    CardView readMaterial,locateCard,assetInOutCard,matTagPair,matTagUnPair,cycleCounting;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+
+        readMaterial=findViewById(R.id.readAssets);
         locateCard=findViewById ( R.id.locateAssets );
         assetInOutCard=findViewById ( R.id.assetInOut );
         cycleCounting =findViewById(R.id.cycleCounting);
         matTagPair=findViewById ( R.id.assetTagPair );
+        matTagUnPair=findViewById(R.id.assetTagUnpair);
+
+        readMaterial.setOnClickListener ( new View.OnClickListener ( ) {
+            @Override
+            public
+            void onClick ( View view ) {
+                Intent intent=new Intent( HomePage.this, ReadMaterial.class );
+                startActivity(intent);
+            }
+        } );
         locateCard.setOnClickListener ( new View.OnClickListener ( ) {
             @Override
             public
@@ -51,6 +63,15 @@ public class HomePage extends AppCompatActivity {
             public
             void onClick ( View view ) {
                 Intent intent=new Intent( HomePage.this,Material_Tag_Pair.class);
+                startActivity(intent);
+            }
+        } );
+
+        matTagUnPair.setOnClickListener ( new View.OnClickListener ( ) {
+            @Override
+            public
+            void onClick ( View view ) {
+                Intent intent=new Intent( HomePage.this,MaterialTagUnpair.class);
                 startActivity(intent);
             }
         } );
