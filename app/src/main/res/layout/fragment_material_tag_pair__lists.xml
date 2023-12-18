@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".materialTagPair_Fragments.MaterialTagPair_Lists"
+    android:id="@+id/fragment_container"
+    >
+
+<!--    <androidx.recyclerview.widget.RecyclerView-->
+<!--        android:id="@+id/recyclerv"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="0dp"-->
+<!--        app:layout_constraintBottom_toTopOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/parent"-->
+<!--         />-->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/TagPairlistRecy"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/common_recycler_locate_tag_pair_unpair"
+        />
+
+    <ProgressBar
+        android:id="@+id/matlistprog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        />
+<!--    <TextView-->
+<!--        android:id="@+id/matListPleasewait"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Please Wait..."-->
+<!--        -->
+<!--        />-->
+
+</FrameLayout>

@@ -17,6 +17,7 @@
     <string name="create_assets" translatable="false">Create Assets</string>
     <string name="locate_assets" translatable="false">Locate Assets</string>
     <string name="read_material" translatable="false">Read Material</string>
+    <string name="large_text" translatable="false">vhsdjvsjnjsvnsdjvndsjvnsdjvdjvsdvnjsdvnsljkvnsdjv</string>
     <string name="locate_material" translatable="false">Locate Material</string>
     <string name="material_issue" translatable="false">Material Issue</string>
     <string name="material_tag_pair" translatable="false">Material TAG Pair</string>
@@ -29,4 +30,6 @@
     <string name="warehouse_management_system" translatable="false">Warehouse Management System</string>
     <string name="cycle_counting1" translatable="false">Physical Inventory</string>
     <string name="cycle_counting" translatable="false">Cycle Counting</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

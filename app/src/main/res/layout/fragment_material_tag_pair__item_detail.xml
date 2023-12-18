@@ -1,86 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Material_Tag_Pair_Details_Page">
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar11"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#678aa5"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar10" />
+    tools:context=".materialTagPair_Fragments.MaterialTagPair_ItemDetail"
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar10"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#81abcc"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Warehouse Management System"
-        app:layout_constraintTop_toTopOf="@id/toolbar10"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar10"
-        app:layout_constraintStart_toStartOf="@id/toolbar10"
-        app:layout_constraintEnd_toEndOf="@id/toolbar10"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        />
-
-    <TextView
-
-        android:id="@+id/textView21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Asset Tag Pair"
-        app:layout_constraintTop_toTopOf="@id/toolbar11"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar11"
-        app:layout_constraintStart_toStartOf="@id/toolbar11"
-        app:layout_constraintEnd_toEndOf="@id/toolbar11"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="25sp"
-        />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/PairButtonDetails"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:text="Pair"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        android:background="@drawable/blue_button"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar11"
-        app:layout_constraintEnd_toEndOf="@id/toolbar11"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@id/textView21"
-        app:layout_constraintTop_toTopOf="@id/toolbar11" />
+    >
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/toolbar11"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         android:background="#f7f6fb"
         >
 
@@ -105,7 +35,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/plantTV"
+                    android:id="@+id/plantidTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -129,7 +59,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/matDocTV"
+                    android:id="@+id/matDocidTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -153,7 +83,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/poNoTV"
+                    android:id="@+id/poNoidTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -177,7 +107,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/matNrTV"
+                    android:id="@+id/matNridTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -201,7 +131,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/unitTV"
+                    android:id="@+id/unitidTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -225,7 +155,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/quantityTV"
+                    android:id="@+id/quantityidTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -249,7 +179,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/useridTV"
+                    android:id="@+id/userid_IDTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -273,7 +203,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/matdescpTV"
+                    android:id="@+id/matdescpidTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -297,7 +227,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/tagidTV"
+                    android:id="@+id/tagid_IDTV"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.5"
@@ -308,25 +238,27 @@
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <ProgressBar
-        android:id="@+id/detailProgressBar"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:indeterminateTint="#678aa5"
-        />
-    <TextView
-        android:text="Please wait..."
-        android:textStyle="italic"
-        android:id="@+id/pwairTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/detailProgressBar"
-        app:layout_constraintStart_toStartOf="@id/detailProgressBar"
-        app:layout_constraintEnd_toEndOf="@id/detailProgressBar"
-        android:textColor="#678aa5"
-        />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        >
+        <ProgressBar
+            android:id="@+id/progress_circulardetail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+        <TextView
+            android:id="@+id/pleasewait4564csd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Please wait..."
+            android:layout_gravity="center"
+            />
+
+    </LinearLayout>
+
+
+
+</FrameLayout>

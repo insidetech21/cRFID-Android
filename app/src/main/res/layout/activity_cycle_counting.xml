@@ -24,7 +24,7 @@ tools:context=".CycleCounting">
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView14"
+            android:id="@+id/maktx"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Discrepancy:"
