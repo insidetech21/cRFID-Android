@@ -8,8 +8,7 @@ import java.util.Locale;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 
-public
-class CommonFunctions {
+public class CommonFunctions {
     public static String convertDate(String dateString) {
         String[] parts = dateString.split("\\(");
         String millisecondsStr = parts[1].replaceAll("[^\\d]", "");
@@ -59,13 +58,5 @@ class CommonFunctions {
     public static void showToast(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
-
-    public static void showAlertFinish( Context context, String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(title)
-                .setMessage(message)
-                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }
+    
 }

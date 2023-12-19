@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.crfid.Material_Tag_Pair;
-import com.example.crfid.Material_Tag_Pair_Details_Page;
 import com.example.crfid.R;
 import com.example.crfid.common.BasicAuthInterceptor;
 import com.example.crfid.common.CommonFunctions;
@@ -92,7 +91,7 @@ class MaterialTagPair_ItemDetail extends Fragment {
                 savedInstanceState );
         viewModeldetget=new ViewModelProvider ( requireActivity () ).get ( MaterialTagPair_ViewModel.class );
 
-        pairB=(Button)((Material_Tag_Pair) getActivity ()).findViewById ( R.id.PairButton );
+        pairB=(Button)((Material_Tag_Pair) getActivity ()).findViewById ( R.id.UnPairButton );
 
 
         plantTV=view.findViewById( R.id.plantidTV);

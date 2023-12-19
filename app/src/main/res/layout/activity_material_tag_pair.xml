@@ -82,7 +82,7 @@
         app:layout_constraintTop_toTopOf="@id/toolbar11" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/PairButton"
+        android:id="@+id/UnPairButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="5dp"
