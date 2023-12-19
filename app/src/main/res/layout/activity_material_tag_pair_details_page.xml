@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".Material_Tag_Pair_Details_Page">
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar11"
+        android:id="@+id/toolbarTWO"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#678aa5"
@@ -15,10 +15,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/toolbar10" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar1" />
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar10"
+        android:id="@+id/toolbar1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="#81abcc"
@@ -29,14 +29,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView20"
+        android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Warehouse Management System"
-        app:layout_constraintTop_toTopOf="@id/toolbar10"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar10"
-        app:layout_constraintStart_toStartOf="@id/toolbar10"
-        app:layout_constraintEnd_toEndOf="@id/toolbar10"
+        app:layout_constraintTop_toTopOf="@id/toolbar1"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar1"
+        app:layout_constraintStart_toStartOf="@id/toolbar1"
+        app:layout_constraintEnd_toEndOf="@id/toolbar1"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="25sp"
@@ -44,14 +44,14 @@
 
     <TextView
 
-        android:id="@+id/textView21"
+        android:id="@+id/textViewTagUnPair"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Asset Tag Pair"
-        app:layout_constraintTop_toTopOf="@id/toolbar11"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar11"
-        app:layout_constraintStart_toStartOf="@id/toolbar11"
-        app:layout_constraintEnd_toEndOf="@id/toolbar11"
+        app:layout_constraintTop_toTopOf="@id/toolbarTWO"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarTWO"
+        app:layout_constraintStart_toStartOf="@id/toolbarTWO"
+        app:layout_constraintEnd_toEndOf="@id/toolbarTWO"
         android:textColor="@color/white"
         android:textStyle="bold"
         android:textSize="25sp"
@@ -67,17 +67,17 @@
         android:textStyle="bold"
         android:textSize="15sp"
         android:background="@drawable/blue_button"
-        app:layout_constraintBottom_toBottomOf="@id/toolbar11"
-        app:layout_constraintEnd_toEndOf="@id/toolbar11"
+        app:layout_constraintBottom_toBottomOf="@id/toolbarTWO"
+        app:layout_constraintEnd_toEndOf="@id/toolbarTWO"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@id/textView21"
-        app:layout_constraintTop_toTopOf="@id/toolbar11" />
+        app:layout_constraintStart_toEndOf="@id/textViewTagUnPair"
+        app:layout_constraintTop_toTopOf="@id/toolbarTWO" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toBottomOf="@id/toolbar11"
+        app:layout_constraintTop_toBottomOf="@id/toolbarTWO"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
