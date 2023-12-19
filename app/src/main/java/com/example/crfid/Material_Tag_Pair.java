@@ -57,7 +57,7 @@ class Material_Tag_Pair extends AppCompatActivity {
     void onCreate ( Bundle savedInstanceState ) {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_material_tag_pair );
-        pair = findViewById ( R.id.UnPairButton );
+        pair = findViewById ( R.id.PairButton );
 //        progressBar = findViewById ( R.id.progressBar );
 //        pleasewait = findViewById ( R.id.pleasewaitTV );
 //        recyclerView = findViewById ( R.id.recyclerv );

@@ -1,4 +1,4 @@
-package com.example.crfid.materialTagPair_Fragments;
+package com.example.crfid.materialTagUnpair_Fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.crfid.MaterialTagUnpair;
 import com.example.crfid.Material_Tag_Pair;
 import com.example.crfid.R;
 import com.example.crfid.common.BasicAuthInterceptor;
@@ -38,7 +39,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public
-class MaterialTagPair_ItemDetail extends Fragment {
+class MaterialTagUnpair_ItemDetail extends Fragment {
 
     TextView plantTV,matDovTV,poNoTV,matnrTV,unitTV,quantityTV,useridTV,matdescpTV,tagidTV;
     private Observer<List<String>> dataObserver;
@@ -60,7 +61,7 @@ class MaterialTagPair_ItemDetail extends Fragment {
     String ebelp = "";
     MaterialTagPair_ViewModel viewModeldetget,viewModedetset;
 
-    Button pairB;
+    Button unpairB;
 
     ProgressBar progressBar;
     TextView pleasewait;
@@ -74,12 +75,13 @@ class MaterialTagPair_ItemDetail extends Fragment {
 
     String cookies="";
 
+
     @Override
     public
     View onCreateView ( LayoutInflater inflater , ViewGroup container ,
                         Bundle savedInstanceState ) {
         // Inflate the layout for this fragment
-        return inflater.inflate ( R.layout.fragment_material_tag_pair__item_detail ,
+        return inflater.inflate ( R.layout.fragment_material_tag_unpair__item_detail ,
                 container ,
                 false );
     }
@@ -91,28 +93,22 @@ class MaterialTagPair_ItemDetail extends Fragment {
                 savedInstanceState );
         viewModeldetget=new ViewModelProvider ( requireActivity () ).get ( MaterialTagPair_ViewModel.class );
 
-        pairB=(Button)((Material_Tag_Pair) getActivity ()).findViewById ( R.id.PairButton );
+        unpairB=(Button)((MaterialTagUnpair) getActivity ()).findViewById ( R.id.UnPairButton );
+        plantTV=view.findViewById( R.id.plantidTVunpair);
+        matDovTV=view.findViewById( R.id.matDocidTVunpair);
+        poNoTV=view.findViewById( R.id.poNoidTVunpair);
+        matnrTV=view.findViewById( R.id.matNridTVunpair);
+        unitTV=view.findViewById( R.id.unitidTVunpair);
+        quantityTV=view.findViewById( R.id.quantityidTVunpair);
+        useridTV=view.findViewById( R.id.userid_IDTVunpair);
+        matdescpTV=view.findViewById( R.id.matdescpidTVunpair);
+        tagidTV=view.findViewById( R.id.tagid_IDTVunpair);
 
 
-        plantTV=view.findViewById( R.id.plantidTV);
-        matDovTV=view.findViewById( R.id.matDocidTV);
-        poNoTV=view.findViewById( R.id.poNoidTV);
-        matnrTV=view.findViewById( R.id.matNridTV);
-        unitTV=view.findViewById( R.id.unitidTV);
-        quantityTV=view.findViewById( R.id.quantityidTV);
-        useridTV=view.findViewById( R.id.userid_IDTV);
-        matdescpTV=view.findViewById( R.id.matdescpidTV);
-        tagidTV=view.findViewById( R.id.tagid_IDTV);
-
-
-        progressBar=view.findViewById( R.id.progress_circulardetail);
-        pleasewait=view.findViewById( R.id.pleasewait4564csd);
+        progressBar=view.findViewById( R.id.progress_circulardetailunpair);
+        pleasewait=view.findViewById( R.id.pleasewait4564csdunpair);
         progressBar.setVisibility(View.INVISIBLE);
         pleasewait.setVisibility(View.INVISIBLE);
-
-
-
-
         dataObserver = new Observer<List<String>>() {
             @Override
             public void onChanged(List<String> data) {
@@ -150,8 +146,7 @@ class MaterialTagPair_ItemDetail extends Fragment {
             }
         };
         viewModeldetget.getData().observe(getViewLifecycleOwner(), dataObserver);
-
-        pairB.setOnClickListener ( new View.OnClickListener ( ) {
+        unpairB.setOnClickListener ( new View.OnClickListener ( ) {
             @Override
             public
             void onClick ( View view ) {
@@ -168,11 +163,7 @@ class MaterialTagPair_ItemDetail extends Fragment {
                 password ) ).build ( );
         Retrofit retrofit = new Retrofit.Builder ( ).baseUrl ( baseUrl ).client ( client ).addConverterFactory ( GsonConverterFactory.create ( ) ).build ( );
         apiService = retrofit.create ( ApiService.class );
-
-
-
     }
-
     @Override
     public
     void onStart () {
