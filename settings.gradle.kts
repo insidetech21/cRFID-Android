@@ -15,4 +15,3 @@ dependencyResolutionManagement {
 
 rootProject.name = "cRFID"
 include(":app")
-include (":RFIDAPI3Library")
