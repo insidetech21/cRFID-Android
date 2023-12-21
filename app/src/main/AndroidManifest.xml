@@ -15,33 +15,35 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CRFID"
         tools:targetApi="31">
+
+
         <activity
-            android:name=".MaterialTagUnpair"
+            android:name="com.example.crfid.MaterialTagUnpair"
             android:exported="false" />
         <activity
-            android:name=".ReadMaterial"
+            android:name="com.example.crfid.ReadMaterial"
             android:exported="false" />
         <activity
 
-            android:name=".Material_Tag_Pair_Details_Page"
+            android:name="com.example.crfid.Material_Tag_Pair_Details_Page"
             android:exported="false" />
         <activity
-            android:name=".Material_Tag_Pair"
+            android:name="com.example.crfid.Material_Tag_Pair"
             android:exported="false" />
         <activity
-            android:name=".CycleCounting"
+            android:name="com.example.crfid.CycleCounting"
             android:exported="false" />
         <activity
-            android:name=".Material_In_Out"
+            android:name="com.example.crfid.Material_In_Out"
             android:exported="false" />
         <activity
-            android:name=".Locate_Asset_Details_Page"
+            android:name="com.example.crfid.Locate_Asset_Details_Page"
             android:exported="false" />
         <activity
-            android:name=".Locate_Asset"
+            android:name="com.example.crfid.Locate_Asset"
             android:exported="false" />
         <activity
-            android:name=".HomePage"
+            android:name="com.example.crfid.HomePage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,13 +52,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Inbound_Tabs_Activity"
+            android:name="com.example.crfid.Inbound_Tabs_Activity"
             android:exported="false" />
         <activity
-            android:name=".InboundPage_Activity"
+            android:name="com.example.crfid.InboundPage_Activity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.crfid.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
