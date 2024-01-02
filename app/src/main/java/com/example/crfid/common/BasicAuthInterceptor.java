@@ -7,6 +7,7 @@ import okhttp3.Interceptor;
 import okhttp3.Request;
 import okhttp3.Response;
 
+
 public
 class BasicAuthInterceptor implements Interceptor {
     private String credentials;

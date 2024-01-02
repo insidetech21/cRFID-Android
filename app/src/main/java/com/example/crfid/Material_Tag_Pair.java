@@ -51,6 +51,7 @@ class Material_Tag_Pair extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     MatTagPair_Frag_Adaptor fragadapter;
+    TextView status;
 
     @Override
     protected
@@ -71,6 +72,7 @@ class Material_Tag_Pair extends AppCompatActivity {
         fragadapter=new MatTagPair_Frag_Adaptor ( this );
         viewPager2.setAdapter ( fragadapter );
         viewPager2.setUserInputEnabled ( false );
+        status=findViewById ( R.id.statusTextViewRFID );
 
 
 

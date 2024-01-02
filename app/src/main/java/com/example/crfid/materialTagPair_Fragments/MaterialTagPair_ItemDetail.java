@@ -1,10 +1,15 @@
 package com.example.crfid.materialTagPair_Fragments;
 
+import android.Manifest;
 import android.app.AlertDialog;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -24,8 +29,10 @@ import com.example.crfid.common.CommonFunctions;
 import com.example.crfid.data.retrofit.ApiService;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Item;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Response;
+import com.example.crfid.rfid.RFIDHandler;
 import com.example.crfid.viewmodels.MaterialTagPair_ViewModel;
 import com.example.user.crfid.R;
+import com.zebra.rfid.api3.TagData;
 
 import java.util.List;
 
@@ -39,9 +46,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public
-class MaterialTagPair_ItemDetail extends Fragment {
+class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.ResponseHandlerInterface {
 
-    TextView plantTV,matDovTV,poNoTV,matnrTV,unitTV,quantityTV,useridTV,matdescpTV,tagidTV;
+    TextView plantTV;
+    TextView matDovTV;
+    TextView poNoTV;
+    TextView matnrTV;
+    TextView unitTV;
+    TextView quantityTV;
+    TextView useridTV;
+    TextView matdescpTV;
+    public TextView tagidTV;
     private Observer<List<String>> dataObserver;
     String werks = "demo";
     String mblnr = "";
@@ -74,6 +89,10 @@ class MaterialTagPair_ItemDetail extends Fragment {
 
 
     String cookies="";
+    private static final int BLUETOOTH_PERMISSION_REQUEST_CODE = 100;
+
+    RFIDHandler rfidHandler;
+    final static String TAG = "RFID_SAMPLE";
 
     @Override
     public
@@ -110,6 +129,26 @@ class MaterialTagPair_ItemDetail extends Fragment {
         pleasewait=view.findViewById( R.id.pleasewait4564csd);
         progressBar.setVisibility(View.INVISIBLE);
         pleasewait.setVisibility(View.INVISIBLE);
+
+        // RFID Handler
+        rfidHandler = new RFIDHandler();
+
+        //Scanner Initializations
+        //Handling Runtime BT permissions for Android 12 and higher
+        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+            if ( ContextCompat.checkSelfPermission(requireContext (),
+                    Manifest.permission.BLUETOOTH_CONNECT)
+                    != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(requireActivity (),
+                        new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT},
+                        BLUETOOTH_PERMISSION_REQUEST_CODE);
+            }else{
+                rfidHandler.onCreate(this);
+            }
+
+        }else{
+            rfidHandler.onCreate(this);
+        }
 
 
 
@@ -188,7 +227,70 @@ class MaterialTagPair_ItemDetail extends Fragment {
             viewModeldetget.getData().removeObserver(dataObserver);
         }
     }
+//////////////////////////////////////////////////////////////////////////////////////////////////
+public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
+    if(requestCode == BLUETOOTH_PERMISSION_REQUEST_CODE){
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            rfidHandler.onCreate(this);
+        }
+        else {
+            Toast.makeText(requireContext (), "Bluetooth Permissions not granted", Toast.LENGTH_SHORT).show();
+        }
+    }
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+}
+
+    @Override
+    public
+    void onPause () {
+        super.onPause ( );
+        rfidHandler.onPause ();
+    }
+
+    @Override
+    public
+    void onDestroy () {
+        super.onDestroy ( );
+        rfidHandler.onDestroy ();
+    }
+
+    @Override
+    public
+    void onResume () {
+        super.onResume ( );
+        rfidHandler.onResume ();
+    }
+
+    @Override
+    public void handleTagdata( TagData[] tagData) {
+        final StringBuilder sb = new StringBuilder();
+        for (int index = 0; index < tagData.length; index++) {
+            sb.append(tagData[index].getTagID() + "\n");
+        }
+
+        requireActivity ().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+//                textrfid.append(sb.toString());
+            }
+        });
+    }
+
+    @Override
+    public void handleTriggerPress(boolean pressed) {
+        if (pressed) {
+            requireActivity ().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+//                    textrfid.setText("");
+                }
+            });
+            rfidHandler.performInventory();
+        } else
+            rfidHandler.stopInventory();
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////
 
     private
     void MatTagDetailFetchRetrofit () {

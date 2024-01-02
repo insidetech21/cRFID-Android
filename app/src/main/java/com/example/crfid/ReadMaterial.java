@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import com.example.user.crfid.R;
-public class ReadMaterial extends AppCompatActivity {
+public class ReadMaterial extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
