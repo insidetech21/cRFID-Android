@@ -13,7 +13,6 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.example.user.crfid.R;
 public class MaterialTagUnpair extends AppCompatActivity {
-    //Mohnish
     TabLayout tabLayout;
     ViewPager2 viewPager2;
     Button unpair;
