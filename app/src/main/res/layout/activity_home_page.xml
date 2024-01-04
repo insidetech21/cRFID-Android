@@ -401,5 +401,18 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
+    <TextView
+        android:id="@+id/rfidStatus"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:text="Status"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@id/toolbar2"
+        app:layout_constraintEnd_toStartOf="@id/textView"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="@id/toolbar2"
+        app:layout_constraintTop_toTopOf="@id/toolbar2" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

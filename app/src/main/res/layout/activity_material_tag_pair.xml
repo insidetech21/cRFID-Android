@@ -143,10 +143,12 @@
 
     <TextView
         android:id="@+id/statusTextViewRFID"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:text="Status"
+        android:textStyle="bold"
+        android:textSize="18dp"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@id/toolbarTWO"
         app:layout_constraintStart_toStartOf="@id/toolbarTWO"

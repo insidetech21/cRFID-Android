@@ -2,6 +2,7 @@ package com.example.crfid.materialTagPair_Fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -30,6 +31,7 @@ import com.example.crfid.data.retrofit.ApiService;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Item;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Response;
 import com.example.crfid.rfid.RFIDHandler;
+import com.example.crfid.rfid.interfaces_RFID.RFID_Context;
 import com.example.crfid.viewmodels.MaterialTagPair_ViewModel;
 import com.example.user.crfid.R;
 import com.zebra.rfid.api3.TagData;
@@ -46,8 +48,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public
-class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.ResponseHandlerInterface {
+class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.ResponseHandlerInterface, RFID_Context {
 
+    final static String TAG = "RFID_SAMPLE";
+    private static final int BLUETOOTH_PERMISSION_REQUEST_CODE = 100;
+    public TextView tagidTV;
+    public TextView rFIDStatusText;
     TextView plantTV;
     TextView matDovTV;
     TextView poNoTV;
@@ -56,8 +62,6 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
     TextView quantityTV;
     TextView useridTV;
     TextView matdescpTV;
-    public TextView tagidTV;
-    private Observer<List<String>> dataObserver;
     String werks = "demo";
     String mblnr = "";
     String ebeln = "";
@@ -74,25 +78,18 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
     String bstmg = "";
     String tag_id = "";
     String ebelp = "";
-    MaterialTagPair_ViewModel viewModeldetget,viewModedetset;
-
+    MaterialTagPair_ViewModel viewModeldetget, viewModedetset;
     Button pairB;
-
     ProgressBar progressBar;
     TextView pleasewait;
-
     String username = "ashwin", password = "Crave@2022",
             baseUrl = "https://aincfapim.test.apimanagement.eu10.hana.ondemand.com/ZCIMS_INT_SRV/";
     ApiService apiService;
-
-    String xcsrftoken="";
-
-
-    String cookies="";
-    private static final int BLUETOOTH_PERMISSION_REQUEST_CODE = 100;
-
+    String xcsrftoken = "";
+    String cookies = "";
     RFIDHandler rfidHandler;
-    final static String TAG = "RFID_SAMPLE";
+    Button startTest;
+    private Observer<List<String>> dataObserver;
 
     @Override
     public
@@ -109,73 +106,79 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
     void onViewCreated ( @NonNull View view , @Nullable Bundle savedInstanceState ) {
         super.onViewCreated ( view ,
                 savedInstanceState );
-        viewModeldetget=new ViewModelProvider ( requireActivity () ).get ( MaterialTagPair_ViewModel.class );
+        viewModeldetget = new ViewModelProvider ( requireActivity ( ) ).get ( MaterialTagPair_ViewModel.class );
 
-        pairB=(Button)((Material_Tag_Pair) getActivity ()).findViewById ( R.id.PairButton );
-
-
-        plantTV=view.findViewById( R.id.plantidTV);
-        matDovTV=view.findViewById( R.id.matDocidTV);
-        poNoTV=view.findViewById( R.id.poNoidTV);
-        matnrTV=view.findViewById( R.id.matNridTV);
-        unitTV=view.findViewById( R.id.unitidTV);
-        quantityTV=view.findViewById( R.id.quantityidTV);
-        useridTV=view.findViewById( R.id.userid_IDTV);
-        matdescpTV=view.findViewById( R.id.matdescpidTV);
-        tagidTV=view.findViewById( R.id.tagid_IDTV);
+        pairB = (Button) ((Material_Tag_Pair) getActivity ( )).findViewById ( R.id.PairButton );
+        rFIDStatusText = (TextView) ((Material_Tag_Pair) getActivity ( )).findViewById ( R.id.statusTextViewRFID );
 
 
-        progressBar=view.findViewById( R.id.progress_circulardetail);
-        pleasewait=view.findViewById( R.id.pleasewait4564csd);
-        progressBar.setVisibility(View.INVISIBLE);
-        pleasewait.setVisibility(View.INVISIBLE);
+        plantTV = view.findViewById ( R.id.plantidTV );
+        matDovTV = view.findViewById ( R.id.matDocidTV );
+        poNoTV = view.findViewById ( R.id.poNoidTV );
+        matnrTV = view.findViewById ( R.id.matNridTV );
+        unitTV = view.findViewById ( R.id.unitidTV );
+        quantityTV = view.findViewById ( R.id.quantityidTV );
+        useridTV = view.findViewById ( R.id.userid_IDTV );
+        matdescpTV = view.findViewById ( R.id.matdescpidTV );
+        tagidTV = view.findViewById ( R.id.tagid_IDTV );
+
+
+        progressBar = view.findViewById ( R.id.progress_circulardetail );
+        pleasewait = view.findViewById ( R.id.pleasewait4564csd );
+        progressBar.setVisibility ( View.INVISIBLE );
+        pleasewait.setVisibility ( View.INVISIBLE );
+
+        startTest = view.findViewById ( R.id.startTestButton );
 
         // RFID Handler
-        rfidHandler = new RFIDHandler();
+        rfidHandler = new RFIDHandler ( );
 
-        //Scanner Initializations
-        //Handling Runtime BT permissions for Android 12 and higher
-        if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-            if ( ContextCompat.checkSelfPermission(requireContext (),
-                    Manifest.permission.BLUETOOTH_CONNECT)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(requireActivity (),
-                        new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT},
-                        BLUETOOTH_PERMISSION_REQUEST_CODE);
-            }else{
-                rfidHandler.onCreate(this);
+        if ( !rfidHandler.isReaderConnected ( ) ) {
+
+            //Scanner Initializations
+            //Handling Runtime BT permissions for Android 12 and higher
+
+            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ) {
+                if ( ContextCompat.checkSelfPermission ( requireContext ( ) ,
+                        Manifest.permission.BLUETOOTH_CONNECT )
+                        != PackageManager.PERMISSION_GRANTED ) {
+                    ActivityCompat.requestPermissions ( requireActivity ( ) ,
+                            new String[]{Manifest.permission.BLUETOOTH_SCAN , Manifest.permission.BLUETOOTH_CONNECT} ,
+                            BLUETOOTH_PERMISSION_REQUEST_CODE );
+                } else {
+                    rfidHandler.onCreate ( this );
+                }
+
+            } else {
+                rfidHandler.onCreate ( this );
             }
-
-        }else{
-            rfidHandler.onCreate(this);
         }
 
 
-
-
-        dataObserver = new Observer<List<String>>() {
+        dataObserver = new Observer<List<String>> ( ) {
             @Override
-            public void onChanged(List<String> data) {
+            public
+            void onChanged ( List<String> data ) {
                 // Update UI with the received list of 10 strings
                 // Access individual values using list indexes
 
 
-                werks = data.get( 0 );
-                mblnr = data.get( 1 );
-                ebeln = data.get(2);
-                budat_mkpf = data.get(3);
-                matnr = data.get(4);
-                buzei = data.get(5);
-                meins = data.get(6);
-                menge = data.get(7);
-                zdate = data.get(8);
-                time = data.get(9);
-                userid = data.get(10);
-                status = data.get(11);
-                maktx = data.get(12);
-                bstmg = data.get(13);
-                tag_id = data.get(14);
-                ebelp = data.get(15);
+                werks = data.get ( 0 );
+                mblnr = data.get ( 1 );
+                ebeln = data.get ( 2 );
+                budat_mkpf = data.get ( 3 );
+                matnr = data.get ( 4 );
+                buzei = data.get ( 5 );
+                meins = data.get ( 6 );
+                menge = data.get ( 7 );
+                zdate = data.get ( 8 );
+                time = data.get ( 9 );
+                userid = data.get ( 10 );
+                status = data.get ( 11 );
+                maktx = data.get ( 12 );
+                bstmg = data.get ( 13 );
+                tag_id = data.get ( 14 );
+                ebelp = data.get ( 15 );
                 // ... set remaining 9 text views with data ...
 
                 plantTV.setText ( werks );
@@ -189,14 +192,15 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
                 tagidTV.setText ( tag_id );
             }
         };
-        viewModeldetget.getData().observe(getViewLifecycleOwner(), dataObserver);
+        viewModeldetget.getData ( ).observe ( getViewLifecycleOwner ( ) ,
+                dataObserver );
 
         pairB.setOnClickListener ( new View.OnClickListener ( ) {
             @Override
             public
             void onClick ( View view ) {
 
-                MatTagDetailFetchRetrofit();
+                MatTagDetailFetchRetrofit ( );
 
 //                Toast.makeText ( getContext ( ) ,
 //                        "pair button clicked ",
@@ -204,11 +208,19 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
             }
         } );
 
+        startTest.setOnClickListener ( new View.OnClickListener ( ) {
+            @Override
+            public
+            void onClick ( View view ) {
+                rfidHandler.Defaults ( );
+//                testStatus.setText(result);
+            }
+        } );
+
         OkHttpClient client = new OkHttpClient.Builder ( ).addInterceptor ( new BasicAuthInterceptor ( username ,
                 password ) ).build ( );
         Retrofit retrofit = new Retrofit.Builder ( ).baseUrl ( baseUrl ).client ( client ).addConverterFactory ( GsonConverterFactory.create ( ) ).build ( );
         apiService = retrofit.create ( ApiService.class );
-
 
 
     }
@@ -223,79 +235,107 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
     public
     void onStop () {
         super.onStop ( );
-        if (dataObserver != null) {
-            viewModeldetget.getData().removeObserver(dataObserver);
+        if ( dataObserver != null ) {
+            viewModeldetget.getData ( ).removeObserver ( dataObserver );
         }
     }
-//////////////////////////////////////////////////////////////////////////////////////////////////
-public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-    if(requestCode == BLUETOOTH_PERMISSION_REQUEST_CODE){
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            rfidHandler.onCreate(this);
+    //////////////////////////////////////////////////////////////////////////////////////////////////
+    public
+    void onRequestPermissionsResult ( int requestCode , @NonNull String[] permissions , @NonNull int[] grantResults ) {
+
+        if ( requestCode == BLUETOOTH_PERMISSION_REQUEST_CODE ) {
+            if ( grantResults.length > 0 && grantResults[ 0 ] == PackageManager.PERMISSION_GRANTED ) {
+                rfidHandler.onCreate ( this );
+            } else {
+                Toast.makeText ( requireContext ( ) ,
+                        "Bluetooth Permissions not granted" ,
+                        Toast.LENGTH_SHORT ).show ( );
+            }
         }
-        else {
-            Toast.makeText(requireContext (), "Bluetooth Permissions not granted", Toast.LENGTH_SHORT).show();
-        }
+        super.onRequestPermissionsResult ( requestCode ,
+                permissions ,
+                grantResults );
     }
-    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-}
 
     @Override
     public
     void onPause () {
         super.onPause ( );
-        rfidHandler.onPause ();
+//        rfidHandler.onPause ( );
+        rfidHandler.stopInventory ();
+
     }
 
+    //
     @Override
     public
     void onDestroy () {
         super.onDestroy ( );
-        rfidHandler.onDestroy ();
+//        rfidHandler.onDestroy ( );
+        rfidHandler.stopInventory ();
+
     }
 
+    //
     @Override
     public
     void onResume () {
         super.onResume ( );
-        rfidHandler.onResume ();
+        rfidHandler.onResume ( );
     }
 
     @Override
-    public void handleTagdata( TagData[] tagData) {
-        final StringBuilder sb = new StringBuilder();
+    public
+    void handleTagdata ( TagData[] tagData ) {
+        final StringBuilder sb = new StringBuilder ( );
         for (int index = 0; index < tagData.length; index++) {
-            sb.append(tagData[index].getTagID() + "\n");
+            sb.append ( tagData[ index ].getTagID ( ) + "\n" );
         }
 
-        requireActivity ().runOnUiThread(new Runnable() {
+        requireActivity ( ).runOnUiThread ( new Runnable ( ) {
             @Override
-            public void run() {
-//                textrfid.append(sb.toString());
+            public
+            void run () {
+//                tagidTV.append(sb.toString());
+                tagidTV.setText ( tagData[ 0 ].getTagID ( ) );
             }
-        });
+        } );
     }
 
     @Override
-    public void handleTriggerPress(boolean pressed) {
-        if (pressed) {
-            requireActivity ().runOnUiThread(new Runnable() {
+    public
+    Context getContext2 () {
+        return requireContext ( );
+    }
+
+    @Override
+    public
+    void runOnUiThread2 ( Runnable action ) {
+        requireActivity ( ).runOnUiThread ( action );
+    }
+
+    @Override
+    public
+    void handleTriggerPress ( boolean pressed ) {
+        if ( pressed ) {
+            requireActivity ( ).runOnUiThread ( new Runnable ( ) {
                 @Override
-                public void run() {
-//                    textrfid.setText("");
+                public
+                void run () {
+                    tagidTV.setText ( "" );
                 }
-            });
-            rfidHandler.performInventory();
+            } );
+            rfidHandler.performInventory ( );
         } else
-            rfidHandler.stopInventory();
+            rfidHandler.stopInventory ( );
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
     private
     void MatTagDetailFetchRetrofit () {
-        progressBar.setVisibility(View.VISIBLE);
-        pleasewait.setVisibility(View.VISIBLE);
+        progressBar.setVisibility ( View.VISIBLE );
+        pleasewait.setVisibility ( View.VISIBLE );
 
         String filter = "budat_mkpf ge datetime'2023-02-01T00:00:00' and budat_mkpf le datetime'2023-10-02T00:00:00'";
 
@@ -311,18 +351,18 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
                 if ( !response.isSuccessful ( ) ) {
 
 
-                    progressBar.setVisibility(View.INVISIBLE);
-                    pleasewait.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility ( View.INVISIBLE );
+                    pleasewait.setVisibility ( View.INVISIBLE );
                     CommonFunctions.showToast ( getContext ( ) ,
-                            "Error code: " + response.code ( )  );
+                            "Error code: " + response.code ( ) );
                     return;
                 }
 
-                Headers headers = response.headers();
-                xcsrftoken=response.headers ().get ( "x-csrf-token" );
-                cookies=response.headers ().get ( "set-cookie" );
+                Headers headers = response.headers ( );
+                xcsrftoken = response.headers ( ).get ( "x-csrf-token" );
+                cookies = response.headers ( ).get ( "set-cookie" );
 
-                MaterialTagPair_Item materialTagPairItem=new MaterialTagPair_Item();
+                MaterialTagPair_Item materialTagPairItem = new MaterialTagPair_Item ( );
 
                 materialTagPairItem.setWerks ( werks );
                 materialTagPairItem.setMblnr ( mblnr );
@@ -345,7 +385,9 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 //                List<MaterialTagPair_Item> arr = materialTagPairResponse.getD ( ).getResults ( );
 //                ArrayList<MaterialTagPair_Item> result = new ArrayList<> ( arr );
 
-                postMaterialTagPair ( xcsrftoken,cookies, materialTagPairItem);
+                postMaterialTagPair ( xcsrftoken ,
+                        cookies ,
+                        materialTagPairItem );
 
             }
 
@@ -355,8 +397,8 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
             void onFailure ( Call<MaterialTagPair_Response> call , Throwable t ) {
 
 
-                progressBar.setVisibility(View.INVISIBLE);
-                pleasewait.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility ( View.INVISIBLE );
+                pleasewait.setVisibility ( View.INVISIBLE );
 
                 CommonFunctions.showToast ( getContext ( ) ,
                         "Error code: " + t.getMessage ( ) );
@@ -364,15 +406,16 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
         } );
     }
 
-    private void postMaterialTagPair(
-            String token, String cookie, MaterialTagPair_Item pick
-    ){
-        String finalCookie = cookie.split(";")[0];
-        Call<MaterialTagPair_Item> call=apiService.postMatTagPair (
-                pick,
-                "application/json",
-                "application/json",
-                token,
+    private
+    void postMaterialTagPair (
+            String token , String cookie , MaterialTagPair_Item pick
+    ) {
+        String finalCookie = cookie.split ( ";" )[ 0 ];
+        Call<MaterialTagPair_Item> call = apiService.postMatTagPair (
+                pick ,
+                "application/json" ,
+                "application/json" ,
+                token ,
                 finalCookie
         );
         call.enqueue ( new Callback<MaterialTagPair_Item> ( ) {
@@ -380,38 +423,43 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
             public
             void onResponse ( Call<MaterialTagPair_Item> call , Response<MaterialTagPair_Item> response ) {
 
-                if(!response.isSuccessful ()){
-                    progressBar.setVisibility(View.INVISIBLE);
-                    pleasewait.setVisibility(View.INVISIBLE);
-                    CommonFunctions.showToast ( getContext (),"Error in posting: " + response.errorBody() );
+                if ( !response.isSuccessful ( ) ) {
+                    progressBar.setVisibility ( View.INVISIBLE );
+                    pleasewait.setVisibility ( View.INVISIBLE );
+                    CommonFunctions.showToast ( getContext ( ) ,
+                            "Error in posting: " + response.errorBody ( ) );
                     return;
                 }
 
-                progressBar.setVisibility(View.INVISIBLE);
-                pleasewait.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility ( View.INVISIBLE );
+                pleasewait.setVisibility ( View.INVISIBLE );
 
 
-                AlertDialog.Builder builder = new AlertDialog.Builder( getActivity ());
-                builder.setTitle("Data Posted!!");
-                builder.setMessage("Data posted successfully!!");
+                AlertDialog.Builder builder = new AlertDialog.Builder ( getActivity ( ) );
+                builder.setTitle ( "Data Posted!!" );
+                builder.setMessage ( "Data posted successfully!!" );
 
                 // Add an "OK" button to dismiss the dialog
-                builder.setPositiveButton("OK", (dialog, which) -> {
+                builder.setPositiveButton ( "OK" ,
+                        ( dialog , which ) -> {
 
-                    dialog.dismiss ();
-                    // Dismiss the dialog
-                    getActivity ().finish();
-                });
+                            dialog.dismiss ( );
+                            // Dismiss the dialog
+                            getActivity ( ).finish ( );
+                        } );
                 // Create and show the AlertDialog
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                AlertDialog alertDialog = builder.create ( );
+                alertDialog.show ( );
             }
+
             @Override
             public
             void onFailure ( Call<MaterialTagPair_Item> call , Throwable t ) {
-                progressBar.setVisibility(View.INVISIBLE);
-                pleasewait.setVisibility(View.INVISIBLE);
-                Toast.makeText(getContext (), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility ( View.INVISIBLE );
+                pleasewait.setVisibility ( View.INVISIBLE );
+                Toast.makeText ( getContext ( ) ,
+                        "Error: " + t.getMessage ( ) ,
+                        Toast.LENGTH_SHORT ).show ( );
             }
         } );
     }
