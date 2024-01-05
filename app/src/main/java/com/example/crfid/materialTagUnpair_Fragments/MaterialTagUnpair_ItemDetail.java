@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.crfid.MaterialTagUnpair;
 import com.example.crfid.Material_Tag_Pair;
+import com.example.crfid.rfid.BaseFragment_RFID;
 import com.example.user.crfid.R;
 import com.example.crfid.common.BasicAuthInterceptor;
 import com.example.crfid.common.CommonFunctions;
@@ -26,6 +27,7 @@ import com.example.crfid.data.retrofit.ApiService;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Item;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Response;
 import com.example.crfid.viewmodels.MaterialTagPair_ViewModel;
+import com.zebra.rfid.api3.TagData;
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public
-class MaterialTagUnpair_ItemDetail extends Fragment {
+class MaterialTagUnpair_ItemDetail extends BaseFragment_RFID {
 
     TextView plantTV,matDovTV,poNoTV,matnrTV,unitTV,quantityTV,useridTV,matdescpTV,tagidTV;
     private Observer<List<String>> dataObserver;
@@ -104,6 +106,12 @@ class MaterialTagUnpair_ItemDetail extends Fragment {
         matdescpTV=view.findViewById( R.id.matdescpidTVunpair);
         tagidTV=view.findViewById( R.id.tagid_IDTVunpair);
 
+
+
+
+        if(!isReaderConnected ()){
+            InitSDK ();
+        }
 
         progressBar=view.findViewById( R.id.progress_circulardetailunpair);
         pleasewait=view.findViewById( R.id.pleasewait4564csdunpair);
@@ -302,5 +310,31 @@ class MaterialTagUnpair_ItemDetail extends Fragment {
                 Toast.makeText(getContext (), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         } );
+    }
+
+    @Override
+    protected
+    void handleTriggerPress ( boolean pressed ) {
+
+    }
+
+    @Override
+    protected
+    void handleTagdata ( TagData[] tagData ) {
+
+    }
+
+
+
+    @Override
+    public
+    void onPause () {
+        super.onPause ( );
+    }
+
+    @Override
+    public
+    void onDestroy () {
+        super.onDestroy ( );
     }
 }

@@ -2,7 +2,6 @@ package com.example.crfid.materialTagPair_Fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -30,8 +28,7 @@ import com.example.crfid.common.CommonFunctions;
 import com.example.crfid.data.retrofit.ApiService;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Item;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Response;
-import com.example.crfid.rfid.RFIDHandler;
-import com.example.crfid.rfid.interfaces_RFID.RFID_Context;
+import com.example.crfid.rfid.BaseFragment_RFID;
 import com.example.crfid.viewmodels.MaterialTagPair_ViewModel;
 import com.example.user.crfid.R;
 import com.zebra.rfid.api3.TagData;
@@ -48,7 +45,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public
-class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.ResponseHandlerInterface, RFID_Context {
+class MaterialTagPair_ItemDetail extends BaseFragment_RFID {
 
     final static String TAG = "RFID_SAMPLE";
     private static final int BLUETOOTH_PERMISSION_REQUEST_CODE = 100;
@@ -87,7 +84,7 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
     ApiService apiService;
     String xcsrftoken = "";
     String cookies = "";
-    RFIDHandler rfidHandler;
+    //    RFIDHandler rfidHandler;
     Button startTest;
     private Observer<List<String>> dataObserver;
 
@@ -131,9 +128,9 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
         startTest = view.findViewById ( R.id.startTestButton );
 
         // RFID Handler
-        rfidHandler = new RFIDHandler ( );
+//        rfidHandler = new RFIDHandler ( );
 
-        if ( !rfidHandler.isReaderConnected ( ) ) {
+        if ( !isReaderConnected ( ) ) {
 
             //Scanner Initializations
             //Handling Runtime BT permissions for Android 12 and higher
@@ -146,14 +143,12 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
                             new String[]{Manifest.permission.BLUETOOTH_SCAN , Manifest.permission.BLUETOOTH_CONNECT} ,
                             BLUETOOTH_PERMISSION_REQUEST_CODE );
                 } else {
-                    rfidHandler.onCreate ( this );
+                    InitSDK ( );
                 }
-
             } else {
-                rfidHandler.onCreate ( this );
+                InitSDK ( );
             }
         }
-
 
         dataObserver = new Observer<List<String>> ( ) {
             @Override
@@ -212,7 +207,7 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
             @Override
             public
             void onClick ( View view ) {
-                rfidHandler.Defaults ( );
+//                rfidHandler.Defaults ( );
 //                testStatus.setText(result);
             }
         } );
@@ -241,30 +236,29 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
-    public
-    void onRequestPermissionsResult ( int requestCode , @NonNull String[] permissions , @NonNull int[] grantResults ) {
-
-        if ( requestCode == BLUETOOTH_PERMISSION_REQUEST_CODE ) {
-            if ( grantResults.length > 0 && grantResults[ 0 ] == PackageManager.PERMISSION_GRANTED ) {
-                rfidHandler.onCreate ( this );
-            } else {
-                Toast.makeText ( requireContext ( ) ,
-                        "Bluetooth Permissions not granted" ,
-                        Toast.LENGTH_SHORT ).show ( );
-            }
-        }
-        super.onRequestPermissionsResult ( requestCode ,
-                permissions ,
-                grantResults );
-    }
+//    public
+//    void onRequestPermissionsResult ( int requestCode , @NonNull String[] permissions , @NonNull int[] grantResults ) {
+//
+//        if ( requestCode == BLUETOOTH_PERMISSION_REQUEST_CODE ) {
+//            if ( grantResults.length > 0 && grantResults[ 0 ] == PackageManager.PERMISSION_GRANTED ) {
+////                rfidHandler.onCreate ( this );
+//                InitSDK ();
+//            } else {
+//                Toast.makeText ( requireContext ( ) ,
+//                        "Bluetooth Permissions not granted" ,
+//                        Toast.LENGTH_SHORT ).show ( );
+//            }
+//        }
+//        super.onRequestPermissionsResult ( requestCode ,
+//                permissions ,
+//                grantResults );
+//    }
 
     @Override
     public
     void onPause () {
         super.onPause ( );
-//        rfidHandler.onPause ( );
-        rfidHandler.stopInventory ();
-
+        onPause2 ( );
     }
 
     //
@@ -272,8 +266,7 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
     public
     void onDestroy () {
         super.onDestroy ( );
-//        rfidHandler.onDestroy ( );
-        rfidHandler.stopInventory ();
+        onDestroy2 ( );
 
     }
 
@@ -282,7 +275,7 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
     public
     void onResume () {
         super.onResume ( );
-        rfidHandler.onResume ( );
+        onResume2 ( );
     }
 
     @Override
@@ -303,17 +296,17 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
         } );
     }
 
-    @Override
-    public
-    Context getContext2 () {
-        return requireContext ( );
-    }
-
-    @Override
-    public
-    void runOnUiThread2 ( Runnable action ) {
-        requireActivity ( ).runOnUiThread ( action );
-    }
+//    @Override
+//    public
+//    Context getContext2 () {
+//        return requireContext ( );
+//    }
+//
+//    @Override
+//    public
+//    void runOnUiThread2 ( Runnable action ) {
+//        requireActivity ( ).runOnUiThread ( action );
+//    }
 
     @Override
     public
@@ -326,9 +319,9 @@ class MaterialTagPair_ItemDetail extends Fragment implements RFIDHandler.Respons
                     tagidTV.setText ( "" );
                 }
             } );
-            rfidHandler.performInventory ( );
+            performInventory ( );
         } else
-            rfidHandler.stopInventory ( );
+            stopInventory ( );
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 

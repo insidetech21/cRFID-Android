@@ -9,73 +9,91 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import com.example.crfid.rfid.BaseActivity_RFID;
 import com.example.crfid.rfid.RFIDHandler;
 import com.example.crfid.rfid.interfaces_RFID.RFID_Context;
 import com.example.user.crfid.R;
 import com.zebra.rfid.api3.TagData;
 
-public class HomePage extends AppCompatActivity implements RFIDHandler.ResponseHandlerInterface, RFID_Context {
+public
+class HomePage extends BaseActivity_RFID {
 
 
-    RFIDHandler rfidHandler;
-    CardView readMaterial,locateCard,assetInOutCard,matTagPair,matTagUnPair,cycleCounting;
     private static final int BLUETOOTH_PERMISSION_REQUEST_CODE = 100;
+    //    RFIDHandler rfidHandler;
+    CardView readMaterial, locateCard, assetInOutCard, matTagPair, matTagUnPair, cycleCounting;
     TextView status;
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home_page);
 
-        readMaterial=findViewById(R.id.readAssets);
-        locateCard=findViewById ( R.id.locateAssets );
-        assetInOutCard=findViewById ( R.id.assetInOut );
-        cycleCounting =findViewById(R.id.cycleCounting);
-        matTagPair=findViewById ( R.id.assetTagPair );
-        matTagUnPair=findViewById(R.id.assetTagUnpair);
-        status=findViewById ( R.id.rfidStatus );
+    @Override
+    protected
+    void onCreate ( Bundle savedInstanceState ) {
+        super.onCreate ( savedInstanceState );
+        setContentView ( R.layout.activity_home_page );
+
+        readMaterial = findViewById ( R.id.readAssets );
+        locateCard = findViewById ( R.id.locateAssets );
+        assetInOutCard = findViewById ( R.id.assetInOut );
+        cycleCounting = findViewById ( R.id.cycleCounting );
+        matTagPair = findViewById ( R.id.assetTagPair );
+        matTagUnPair = findViewById ( R.id.assetTagUnpair );
+        status = findViewById ( R.id.rfidStatus );
 
         // RFID Handler
-        rfidHandler = new RFIDHandler();
+//        rfidHandler = new RFIDHandler();
 
-        if(!rfidHandler.isReaderConnected ()){
 
+        if ( !isReaderConnected ( ) ) {
+//            status.setText ( "Disconnected" );
+//            status.setTextColor ( Color.RED );
             //Scanner Initializations
             //Handling Runtime BT permissions for Android 12 and higher
 
-            if( Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-                if ( ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.BLUETOOTH_CONNECT)
-                        != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{Manifest.permission.BLUETOOTH_SCAN, Manifest.permission.BLUETOOTH_CONNECT},
-                            BLUETOOTH_PERMISSION_REQUEST_CODE);
-                }else{
-                    rfidHandler.onCreate( this );
+            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ) {
+                if ( ContextCompat.checkSelfPermission ( this ,
+                        Manifest.permission.BLUETOOTH_CONNECT )
+                        != PackageManager.PERMISSION_GRANTED ) {
+                    ActivityCompat.requestPermissions ( this ,
+                            new String[]{Manifest.permission.BLUETOOTH_SCAN , Manifest.permission.BLUETOOTH_CONNECT} ,
+                            BLUETOOTH_PERMISSION_REQUEST_CODE );
+                } else {
+                    InitSDK ( );
                 }
-            }else{
-                rfidHandler.onCreate(this);
+
+            } else {
+                InitSDK ( );
             }
+        }
+
+        if ( isReaderConnected ( ) ) {
+            status.setText ( "Connected" );
+            status.setTextColor ( Color.GREEN );
+        } else {
+            status.setText ( "Disconnected" );
+            status.setTextColor ( Color.RED );
         }
 
         readMaterial.setOnClickListener ( new View.OnClickListener ( ) {
             @Override
             public
             void onClick ( View view ) {
-                Intent intent=new Intent( HomePage.this, ReadMaterial.class );
-                startActivity(intent);
+                Intent intent = new Intent ( HomePage.this ,
+                        ReadMaterial.class );
+                startActivity ( intent );
             }
         } );
         locateCard.setOnClickListener ( new View.OnClickListener ( ) {
             @Override
             public
             void onClick ( View view ) {
-                Intent intent=new Intent( HomePage.this, Locate_Asset.class );
-                startActivity(intent);
+                Intent intent = new Intent ( HomePage.this ,
+                        Locate_Asset.class );
+                startActivity ( intent );
             }
         } );
 
@@ -83,8 +101,9 @@ public class HomePage extends AppCompatActivity implements RFIDHandler.ResponseH
             @Override
             public
             void onClick ( View view ) {
-                Intent intent=new Intent( HomePage.this, Material_In_Out.class );
-                startActivity(intent);
+                Intent intent = new Intent ( HomePage.this ,
+                        Material_In_Out.class );
+                startActivity ( intent );
             }
         } );
 
@@ -92,8 +111,9 @@ public class HomePage extends AppCompatActivity implements RFIDHandler.ResponseH
             @Override
             public
             void onClick ( View view ) {
-                Intent intent=new Intent( HomePage.this, CycleCounting.class );
-                startActivity(intent);
+                Intent intent = new Intent ( HomePage.this ,
+                        CycleCounting.class );
+                startActivity ( intent );
             }
         } );
 
@@ -101,8 +121,9 @@ public class HomePage extends AppCompatActivity implements RFIDHandler.ResponseH
             @Override
             public
             void onClick ( View view ) {
-                Intent intent=new Intent( HomePage.this,Material_Tag_Pair.class);
-                startActivity(intent);
+                Intent intent = new Intent ( HomePage.this ,
+                        Material_Tag_Pair.class );
+                startActivity ( intent );
             }
         } );
 
@@ -110,8 +131,9 @@ public class HomePage extends AppCompatActivity implements RFIDHandler.ResponseH
             @Override
             public
             void onClick ( View view ) {
-                Intent intent=new Intent( HomePage.this,MaterialTagUnpair.class);
-                startActivity(intent);
+                Intent intent = new Intent ( HomePage.this ,
+                        MaterialTagUnpair.class );
+                startActivity ( intent );
             }
         } );
     }
@@ -120,24 +142,37 @@ public class HomePage extends AppCompatActivity implements RFIDHandler.ResponseH
     public
     void onPause () {
         super.onPause ( );
-//        rfidHandler.onPause ();
-//        rfidHandler.stopInventory ();
-
+        onPause2 ( );
     }
-//
+
+    //
     @Override
     public
     void onDestroy () {
         super.onDestroy ( );
-//        rfidHandler.onDestroy ();
-//        rfidHandler.stopInventory ();
+        onDestroy2 ( );
     }
+
+//    @Override
+//    public
+//    void onResume () {
+//        super.onResume ( );
+////        rfidHandler.onResume ();
 //
+//    }
+
     @Override
-    public
-    void onResume () {
-        super.onResume ( );
-        rfidHandler.onResume ();
+    protected
+    void onPostResume () {
+        super.onPostResume ( );
+        onResume2 ( );
+        if ( isReaderConnected ( ) ) {
+            status.setText ( "Connected" );
+            status.setTextColor ( Color.GREEN );
+        } else {
+            status.setText ( "Disconnected" );
+            status.setTextColor ( Color.RED );
+        }
     }
 
     @Override
@@ -158,15 +193,15 @@ public class HomePage extends AppCompatActivity implements RFIDHandler.ResponseH
 //        });
     }
 
-    @Override
-    public
-    Context getContext2 () {
-        return this;
-    }
-    @Override
-    public void runOnUiThread2 ( Runnable action ) {
-        this.runOnUiThread ( action );
-    }
+//    @Override
+//    public
+//    Context getContext2 () {
+//        return this;
+//    }
+//    @Override
+//    public void runOnUiThread2 ( Runnable action ) {
+//        this.runOnUiThread ( action );
+//    }
 
     @Override
     public
@@ -179,9 +214,9 @@ public class HomePage extends AppCompatActivity implements RFIDHandler.ResponseH
 //                    tagidTV.setText ( "" );
                 }
             } );
-            rfidHandler.performInventory ( );
+            performInventory ( );
         } else
-            rfidHandler.stopInventory ( );
+            stopInventory ( );
     }
 
 }

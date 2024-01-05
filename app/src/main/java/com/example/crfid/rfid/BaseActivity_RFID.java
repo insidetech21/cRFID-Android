@@ -8,6 +8,8 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+
+
 import com.example.crfid.rfid.interfaces_RFID.RFID_Context;
 import com.zebra.rfid.api3.ACCESS_OPERATION_CODE;
 import com.zebra.rfid.api3.ACCESS_OPERATION_STATUS;
@@ -34,8 +36,8 @@ import com.zebra.rfid.api3.TriggerInfo;
 
 import java.util.ArrayList;
 
-public
-class BaseActivity_RFID extends AppCompatActivity {
+public abstract
+class BaseActivity_RFID extends AppCompatActivity implements Readers.RFIDReaderEventHandler {
     final static String TAG = "RFID_SAMPLE";
     // RFID Reader
     private static Readers readers;
@@ -46,7 +48,7 @@ class BaseActivity_RFID extends AppCompatActivity {
 //    TextView textView;
     // In case of RFD8500 change reader name with intended device below from list of paired RFD8500
     String readerName = "RFD4031-G10B700-JP";
-    private RFIDHandler.EventHandler eventHandler;
+    private EventHandler eventHandler;
     // general
     private int MAX_POWER = 270;
 
@@ -71,6 +73,22 @@ class BaseActivity_RFID extends AppCompatActivity {
         }
     }
 
+    @Override
+    public
+    void RFIDReaderAppeared ( ReaderDevice readerDevice ) {
+        Log.d ( TAG ,
+                "RFIDReaderAppeared " + readerDevice.getName ( ) );
+        connectReader ( );
+    }
+
+    @Override
+    public
+    void RFIDReaderDisappeared ( ReaderDevice readerDevice ) {
+        Log.d ( TAG ,
+                "RFIDReaderDisappeared " + readerDevice.getName ( ) );
+        if ( readerDevice.getName ( ).equals ( reader.getHostName ( ) ) )
+            disconnect ( );
+    }
 
     protected synchronized
     String connect () {
@@ -81,6 +99,34 @@ class BaseActivity_RFID extends AppCompatActivity {
                 if ( !reader.isConnected ( ) ) {
                     // Establish connection to the RFID Reader
                     reader.connect ( );
+                    ConfigureReader ( );
+                    if ( reader.isConnected ( ) ) {
+                        return "Connected: " + reader.getHostName ( );
+                    }
+                }
+            }
+            catch ( InvalidUsageException e ) {
+                e.printStackTrace ( );
+            }
+            catch ( OperationFailureException e ) {
+                e.printStackTrace ( );
+                Log.d ( TAG ,
+                        "OperationFailureException " + e.getVendorMessage ( ) );
+                String des = e.getResults ( ).toString ( );
+                return "Connection failed" + e.getVendorMessage ( ) + " " + des;
+            }
+        }
+        return "";
+    }
+    protected synchronized
+    String reconnect () {
+        if ( reader != null ) {
+            Log.d ( TAG ,
+                    "connect " + reader.getHostName ( ) );
+            try {
+                if ( !reader.isConnected ( ) ) {
+                    // Establish connection to the RFID Reader
+                    reader.reconnect ( );
                     ConfigureReader ( );
                     if ( reader.isConnected ( ) ) {
                         return "Connected: " + reader.getHostName ( );
@@ -218,7 +264,7 @@ class BaseActivity_RFID extends AppCompatActivity {
 //                            stopInventory ();
                             return null;
                         }
-                    }.execute ( );
+                    }.execute (  );
                 }
             }
         }
@@ -281,6 +327,8 @@ class BaseActivity_RFID extends AppCompatActivity {
             e.printStackTrace ( );
         }
     }
+    protected abstract void handleTriggerPress(boolean pressed);
+    protected abstract void handleTagdata ( TagData[] tagData ) ;
 
     public synchronized
     void stopInventory () {
@@ -319,6 +367,26 @@ class BaseActivity_RFID extends AppCompatActivity {
 //            textView.setText ( result );
         }
     }
+
+
+
+
+    public
+    String onResume2 () {
+        return connect ( );
+    }
+
+    public
+    void onPause2 () {
+        disconnect ( );
+    }
+
+    public
+    void onDestroy2 () {
+        dispose ( );
+    }
+
+
 
     private synchronized
     void GetAvailableReader () {
@@ -395,5 +463,56 @@ class BaseActivity_RFID extends AppCompatActivity {
             super.onPostExecute ( aVoid );
             connectReader ( );
         }
+    }
+
+    public void changeToSingleScanMode(){
+        try {
+            TriggerInfo triggerInfo = new TriggerInfo();
+            triggerInfo.StopTrigger.setTriggerType(STOP_TRIGGER_TYPE.STOP_TRIGGER_TYPE_TAG_OBSERVATION_WITH_TIMEOUT);
+            Long tagObservation = Long.parseLong("1");
+            triggerInfo.StopTrigger.TagObservation.setN(tagObservation.shortValue());
+            reader.Config.setStartTrigger(triggerInfo.StartTrigger);
+            reader.Config.setStopTrigger(triggerInfo.StopTrigger);
+        } catch (InvalidUsageException e) {
+            e.printStackTrace();
+        } catch (OperationFailureException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void changeToBulkScanMode(){
+        try {
+            TriggerInfo triggerInfo = new TriggerInfo();
+            triggerInfo.StartTrigger.setTriggerType(START_TRIGGER_TYPE.START_TRIGGER_TYPE_IMMEDIATE);
+            triggerInfo.StopTrigger.setTriggerType(STOP_TRIGGER_TYPE.STOP_TRIGGER_TYPE_IMMEDIATE);
+            reader.Config.setStartTrigger(triggerInfo.StartTrigger);
+            reader.Config.setStopTrigger(triggerInfo.StopTrigger);
+        } catch (InvalidUsageException e) {
+            e.printStackTrace();
+        } catch (OperationFailureException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void setReaderPower(int power){
+        AsyncTask task = new AsyncTask() {
+            @Override
+            protected Object doInBackground(Object[] objects) {
+                try {
+                    Antennas.AntennaRfConfig antennaRfConfig = reader.Config.Antennas.getAntennaRfConfig(1);
+                    antennaRfConfig.setTransmitPowerIndex(power);
+                    reader.Config.Antennas.setAntennaRfConfig(1, antennaRfConfig);
+//                    reader.Config.Antennas.getAntennaRfConfig(1).setTransmitPowerIndex(power);
+                } catch (InvalidUsageException e) {
+                    e.printStackTrace();
+                } catch (OperationFailureException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+        };
+        task.execute();
     }
 }
