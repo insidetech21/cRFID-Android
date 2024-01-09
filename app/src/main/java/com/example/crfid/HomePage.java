@@ -246,11 +246,11 @@ class HomePage extends BaseActivity_RFID {
                             Toast.LENGTH_SHORT ).show ( );
                 }
             } );
-//            performInventory ( );
+            performInventory ( );
 
 
         } else {
-//            stopInventory ( );
+            stopInventory ( );
         }
     }
 

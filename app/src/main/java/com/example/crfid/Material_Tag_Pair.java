@@ -45,7 +45,7 @@ import com.example.crfid.R;
 import com.zebra.rfid.api3.TagData;
 
 public
-class Material_Tag_Pair extends AppCompatActivity {
+class Material_Tag_Pair extends BaseActivity_RFID {
 
     private static final int BLUETOOTH_PERMISSION_REQUEST_CODE = 100;
     MaterialTagPair_ItemDetail materialTagPairItemDetail;
@@ -95,25 +95,28 @@ class Material_Tag_Pair extends AppCompatActivity {
 
         materialTagPairItemDetail = new MaterialTagPair_ItemDetail ( );
 
-//        if ( !isReaderConnected ( ) ) {
-//
-//            //Scanner Initializations
-//            //Handling Runtime BT permissions for Android 12 and higher
-//
-//            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ) {
-//                if ( ContextCompat.checkSelfPermission ( this ,
-//                        Manifest.permission.BLUETOOTH_CONNECT )
-//                        != PackageManager.PERMISSION_GRANTED ) {
-//                    ActivityCompat.requestPermissions ( this ,
-//                            new String[]{Manifest.permission.BLUETOOTH_SCAN , Manifest.permission.BLUETOOTH_CONNECT} ,
-//                            BLUETOOTH_PERMISSION_REQUEST_CODE );
-//                } else {
-//                    InitSDK ( );
-//                }
-//            } else {
-//                InitSDK ( );
-//            }
-//        }
+        if ( !isReaderConnected ( ) ) {
+//            status.setText ( "Disconnected" );
+//            status.setTextColor ( Color.RED );
+            //Scanner Initializations
+            //Handling Runtime BT permissions for Android 12 and higher
+
+
+            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ) {
+                if ( ContextCompat.checkSelfPermission ( this ,
+                        Manifest.permission.BLUETOOTH_CONNECT )
+                        != PackageManager.PERMISSION_GRANTED ) {
+                    ActivityCompat.requestPermissions ( this ,
+                            new String[]{Manifest.permission.BLUETOOTH_SCAN , Manifest.permission.BLUETOOTH_CONNECT} ,
+                            BLUETOOTH_PERMISSION_REQUEST_CODE );
+                } else {
+                    InitSDK ( );
+                }
+
+            } else {
+                InitSDK ( );
+            }
+        }
 
 
         for (int i = 0; i < tabLayout.getTabCount ( ); i++) {
@@ -205,51 +208,47 @@ class Material_Tag_Pair extends AppCompatActivity {
 //        } );
     }
 
-//    @Override
-//    protected
-//    void handleTriggerPress ( boolean pressed ) {
-//        if ( pressed ) {
-//            this.runOnUiThread ( new Runnable ( ) {
-//                @Override
-//                public
-//                void run () {
-////                    tagidTV.setText ( "" );
-//                    shareTagDataViewModel.setLiveTagData ( "" );
-//                    status.setText ( "hello" );
-//
-//                    Toast.makeText ( getApplicationContext (),"Trigger pressed",Toast.LENGTH_SHORT).show();
-//                }
-//            } );
-//            performInventory ( );
-//        } else
-//            stopInventory ( );
-//    }
+    @Override
+    public
+    void handleTriggerPress ( boolean pressed ) {
+        if ( pressed ) {
+            this.runOnUiThread ( new Runnable ( ) {
+                @Override
+                public
+                void run () {
+                    status.setText ( "" );
+                    shareTagDataViewModel.setLiveTagData ( "" );
 
-//    @Override
-//    protected
-//    void handleTagdata ( TagData[] tagData ) {
-//        final StringBuilder sb = new StringBuilder ( );
-//        for (int index = 0; index < tagData.length; index++) {
-//            sb.append ( tagData[ index ].getTagID ( ) + "\n" );
-//        }
-//
-////        String firstTag="000000000";
-//        if ( tagData.length > 0 ) {
-//            firstTag = tagData[ 0 ].getTagID ( );
-//        }
-//
-//        this.runOnUiThread ( new Runnable ( ) {
-//            @Override
-//            public
-//            void run () {
-////                tagidTV.append(sb.toString());
-//                shareTagDataViewModel.setLiveTagData ( "hello hello" );
-////                tagidTV.setText ( tagData[ 0 ].getTagID ( ) );
-//                status.setText ( sb.toString ( ) );
-//
-//            }
-//        } );
-//    }
+                }
+            } );
+            performInventory ( );
+
+
+        } else {
+            stopInventory ( );
+        }
+    }
+
+    @Override
+    public
+    void handleTagdata ( TagData[] tagData ) {
+        final StringBuilder sb = new StringBuilder ( );
+        for (int index = 0; index < tagData.length; index++) {
+            sb.append ( tagData[ index ].getTagID ( ) + "\n" );
+        }
+
+        firstTag = tagData[ 0 ].getTagID ( );
+
+        this.runOnUiThread ( new Runnable ( ) {
+            @Override
+            public
+            void run () {
+//                tagidTV.append(sb.toString());
+                shareTagDataViewModel.setLiveTagData ( firstTag );
+                status.setText ( tagData[ 0 ].getTagID ( ) );
+            }
+        } );
+    }
 
     @Override
     protected
@@ -308,6 +307,27 @@ class Material_Tag_Pair extends AppCompatActivity {
                         Toast.LENGTH_SHORT ).show ( );
             }
         } );
+    }
+
+    @Override
+    protected
+    void onDestroy () {
+        super.onDestroy ( );
+        onDestroy2 ( );
+    }
+
+    @Override
+    protected
+    void onPause () {
+        super.onPause ( );
+        onPause2 ( );
+    }
+
+    @Override
+    protected
+    void onPostResume () {
+        super.onPostResume ( );
+        onResume2 ( );
     }
 
     public
@@ -438,6 +458,4 @@ class Material_Tag_Pair extends AppCompatActivity {
             }
         }
     }
-
-
 }

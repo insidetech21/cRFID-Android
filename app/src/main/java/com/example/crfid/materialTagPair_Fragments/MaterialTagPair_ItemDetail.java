@@ -47,7 +47,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public
-class MaterialTagPair_ItemDetail extends BaseFragment_RFID {
+class MaterialTagPair_ItemDetail extends Fragment {
 
     final static String TAG = "RFID_SAMPLE";
     private static final int BLUETOOTH_PERMISSION_REQUEST_CODE = 100;
@@ -138,25 +138,25 @@ class MaterialTagPair_ItemDetail extends BaseFragment_RFID {
         // RFID Handler
 //        rfidHandler = new RFIDHandler ( );
 
-        if ( !isReaderConnected ( ) ) {
-
-            //Scanner Initializations
-            //Handling Runtime BT permissions for Android 12 and higher
-
-            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ) {
-                if ( ContextCompat.checkSelfPermission ( requireContext ( ) ,
-                        Manifest.permission.BLUETOOTH_CONNECT )
-                        != PackageManager.PERMISSION_GRANTED ) {
-                    ActivityCompat.requestPermissions ( requireActivity ( ) ,
-                            new String[]{Manifest.permission.BLUETOOTH_SCAN , Manifest.permission.BLUETOOTH_CONNECT} ,
-                            BLUETOOTH_PERMISSION_REQUEST_CODE );
-                } else {
-                    InitSDK ( );
-                }
-            } else {
-                InitSDK ( );
-            }
-        }
+//        if ( !isReaderConnected ( ) ) {
+//
+//            //Scanner Initializations
+//            //Handling Runtime BT permissions for Android 12 and higher
+//
+//            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ) {
+//                if ( ContextCompat.checkSelfPermission ( requireContext ( ) ,
+//                        Manifest.permission.BLUETOOTH_CONNECT )
+//                        != PackageManager.PERMISSION_GRANTED ) {
+//                    ActivityCompat.requestPermissions ( requireActivity ( ) ,
+//                            new String[]{Manifest.permission.BLUETOOTH_SCAN , Manifest.permission.BLUETOOTH_CONNECT} ,
+//                            BLUETOOTH_PERMISSION_REQUEST_CODE );
+//                } else {
+//                    InitSDK ( );
+//                }
+//            } else {
+//                InitSDK ( );
+//            }
+//        }
 
 
         shareTagDataViewModel2.getLiveTagData ().observe ( getViewLifecycleOwner (), new Observer<String>()
@@ -309,23 +309,23 @@ class MaterialTagPair_ItemDetail extends BaseFragment_RFID {
 //        onResume2 ( );
     }
 
-    @Override
-    public
-    void handleTagdata ( TagData[] tagData ) {
-        final StringBuilder sb = new StringBuilder ( );
-        for (int index = 0; index < tagData.length; index++) {
-            sb.append ( tagData[ index ].getTagID ( ) + "\n" );
-        }
-
-        requireActivity ( ).runOnUiThread ( new Runnable ( ) {
-            @Override
-            public
-            void run () {
-//                tagidTV.append(sb.toString());
-                tagidTV.setText ( tagData[ 0 ].getTagID ( ) );
-            }
-        } );
-    }
+//    @Override
+//    public
+//    void handleTagdata ( TagData[] tagData ) {
+//        final StringBuilder sb = new StringBuilder ( );
+//        for (int index = 0; index < tagData.length; index++) {
+//            sb.append ( tagData[ index ].getTagID ( ) + "\n" );
+//        }
+//
+//        requireActivity ( ).runOnUiThread ( new Runnable ( ) {
+//            @Override
+//            public
+//            void run () {
+////                tagidTV.append(sb.toString());
+//                tagidTV.setText ( tagData[ 0 ].getTagID ( ) );
+//            }
+//        } );
+//    }
 
 //    @Override
 //    public
@@ -339,21 +339,21 @@ class MaterialTagPair_ItemDetail extends BaseFragment_RFID {
 //        requireActivity ( ).runOnUiThread ( action );
 //    }
 
-    @Override
-    public
-    void handleTriggerPress ( boolean pressed ) {
-        if ( pressed ) {
-            requireActivity ( ).runOnUiThread ( new Runnable ( ) {
-                @Override
-                public
-                void run () {
-                    tagidTV.setText ( "" );
-                }
-            } );
-            performInventory ( );
-        } else
-            stopInventory ( );
-    }
+//    @Override
+//    public
+//    void handleTriggerPress ( boolean pressed ) {
+//        if ( pressed ) {
+//            requireActivity ( ).runOnUiThread ( new Runnable ( ) {
+//                @Override
+//                public
+//                void run () {
+//                    tagidTV.setText ( "" );
+//                }
+//            } );
+//            performInventory ( );
+//        } else
+//            stopInventory ( );
+//    }
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
     private
