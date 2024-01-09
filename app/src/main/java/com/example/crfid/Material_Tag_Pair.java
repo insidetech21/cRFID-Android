@@ -83,7 +83,6 @@ class Material_Tag_Pair extends BaseActivity_RFID {
         setContentView ( R.layout.activity_material_tag_pair );
         pair = findViewById ( R.id.PairButton );
         onCreate ( this );
-        EventBus.getDefault().register(this);
 //        progressBar = findViewById ( R.id.progressBar );
 //        pleasewait = findViewById ( R.id.pleasewaitTV );
 //        recyclerView = findViewById ( R.id.recyclerv );
@@ -334,10 +333,22 @@ class Material_Tag_Pair extends BaseActivity_RFID {
     protected
     void onPause () {
         super.onPause ( );
-        EventBus.getDefault().unregister (this);
 //        onPause2 ( );
     }
 
+    @Override
+    protected
+    void onStart () {
+        super.onStart ( );
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected
+    void onStop () {
+        super.onStop ( );
+        EventBus.getDefault().unregister (this);
+    }
     @Override
     protected
     void onPostResume () {

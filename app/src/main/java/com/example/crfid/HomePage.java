@@ -49,7 +49,6 @@ class HomePage extends BaseActivity_RFID {
         setContentView ( R.layout.activity_home_page );
 
         onCreate ( this );
-        EventBus.getDefault().register(this);
         readMaterial = findViewById ( R.id.readAssets );
         locateCard = findViewById ( R.id.locateAssets );
         assetInOutCard = findViewById ( R.id.assetInOut );
@@ -169,10 +168,24 @@ class HomePage extends BaseActivity_RFID {
     }
 
     @Override
+    protected
+    void onStart () {
+        super.onStart ( );
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected
+    void onStop () {
+        super.onStop ( );
+        EventBus.getDefault().unregister (this);
+    }
+
+    @Override
     public
     void onPause () {
         super.onPause ( );
-        EventBus.getDefault().unregister (this);
+
 //        onPause2 ( );
     }
 
@@ -187,9 +200,6 @@ class HomePage extends BaseActivity_RFID {
     public
     void onResume () {
         super.onResume ( );
-//        rfidHandler.onResume ();
-//        onResume2 ( );
-
     }
 
     @Override
