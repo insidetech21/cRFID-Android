@@ -20,11 +20,17 @@ import android.widget.Toast;
 
 import com.example.crfid.rfid.BaseActivity_RFID;
 import com.example.crfid.rfid.RFIDHandler;
+import com.example.crfid.rfid.events.RFIDTagReadEvent;
+import com.example.crfid.rfid.events.RFIDTriggerEvent;
 import com.example.crfid.rfid.interfaces_RFID.RFID_Context;
 import com.example.crfid.R;
 import com.example.crfid.viewmodels.ConnectionStatus_ViewModel;
 import com.example.crfid.viewmodels.ShareTagData_ViewModel;
 import com.zebra.rfid.api3.TagData;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 public
 class HomePage extends BaseActivity_RFID {
@@ -42,6 +48,8 @@ class HomePage extends BaseActivity_RFID {
         super.onCreate ( savedInstanceState );
         setContentView ( R.layout.activity_home_page );
 
+        onCreate ( this );
+        EventBus.getDefault().register(this);
         readMaterial = findViewById ( R.id.readAssets );
         locateCard = findViewById ( R.id.locateAssets );
         assetInOutCard = findViewById ( R.id.assetInOut );
@@ -164,14 +172,15 @@ class HomePage extends BaseActivity_RFID {
     public
     void onPause () {
         super.onPause ( );
-        onPause2 ( );
+        EventBus.getDefault().unregister (this);
+//        onPause2 ( );
     }
 
     @Override
     public
     void onDestroy () {
         super.onDestroy ( );
-        onDestroy2 ( );
+//        onDestroy2 ( );
     }
 
     @Override
@@ -179,7 +188,7 @@ class HomePage extends BaseActivity_RFID {
     void onResume () {
         super.onResume ( );
 //        rfidHandler.onResume ();
-        onResume2 ( );
+//        onResume2 ( );
 
     }
 
@@ -187,7 +196,7 @@ class HomePage extends BaseActivity_RFID {
     protected
     void onPostResume () {
         super.onPostResume ( );
-        onResume2 ( );
+//        onResume2 ( );
         if ( isReaderConnected ( ) ) {
             connectionStatusViewModel.getconnectStatus ( ).observe ( this ,
                     new Observer<String> ( ) {
@@ -204,9 +213,10 @@ class HomePage extends BaseActivity_RFID {
         }
     }
 
-    @Override
+    @Subscribe(threadMode = ThreadMode.MAIN)
+//    @Override
     public
-    void handleTagdata ( TagData[] tagData ) {
+    void handleTagdata ( RFIDTagReadEvent tagData ) {
 
 //        final StringBuilder sb = new StringBuilder();
 //        for (int index = 0; index < tagData.length; index++) {
@@ -232,10 +242,9 @@ class HomePage extends BaseActivity_RFID {
 //        this.runOnUiThread ( action );
 //    }
 
-    @Override
-    public
-    void handleTriggerPress ( boolean pressed ) {
-        if ( pressed ) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void handleTriggerPress ( RFIDTriggerEvent pressed ) {
+        if ( pressed.isPressed () ) {
             this.runOnUiThread ( new Runnable ( ) {
                 @Override
                 public
@@ -247,8 +256,6 @@ class HomePage extends BaseActivity_RFID {
                 }
             } );
             performInventory ( );
-
-
         } else {
             stopInventory ( );
         }

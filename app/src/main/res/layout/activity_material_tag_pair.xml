@@ -147,9 +147,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:text="Status"
-        android:textStyle="bold"
-        android:textSize="18dp"
         android:textColor="@color/white"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@id/toolbarTWO"
         app:layout_constraintStart_toStartOf="@id/toolbarTWO"
         app:layout_constraintTop_toTopOf="@id/toolbarTWO" />

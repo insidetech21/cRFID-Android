@@ -1,5 +1,6 @@
 package com.example.crfid.rfid;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -10,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 
+import com.example.crfid.rfid.events.RFIDTagReadEvent;
+import com.example.crfid.rfid.events.RFIDTriggerEvent;
 import com.example.crfid.rfid.interfaces_RFID.RFID_Context;
 import com.example.crfid.viewmodels.ConnectionStatus_ViewModel;
 import com.zebra.rfid.api3.ACCESS_OPERATION_CODE;
@@ -35,6 +38,8 @@ import com.zebra.rfid.api3.STOP_TRIGGER_TYPE;
 import com.zebra.rfid.api3.TagData;
 import com.zebra.rfid.api3.TriggerInfo;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 
 public abstract
@@ -52,8 +57,13 @@ class BaseActivity_RFID extends AppCompatActivity implements Readers.RFIDReaderE
     private EventHandler eventHandler;
     // general
     private int MAX_POWER = 270;
+    Context context;
 
 
+
+    public void onCreate(Context activity){
+        context=activity;
+    }
     protected
     void InitSDK () {
         Log.d ( TAG ,
@@ -225,11 +235,11 @@ class BaseActivity_RFID extends AppCompatActivity implements Readers.RFIDReaderE
         }
     }
 
-    protected abstract
-    void handleTriggerPress ( boolean pressed );
-
-    protected abstract
-    void handleTagdata ( TagData[] tagData );
+//    protected abstract
+//    void handleTriggerPress ( boolean pressed );
+//
+//    protected abstract
+//    void handleTagdata ( TagData[] tagData );
 
     public synchronized
     void stopInventory () {
@@ -409,7 +419,9 @@ class BaseActivity_RFID extends AppCompatActivity implements Readers.RFIDReaderE
                         @Override
                         protected
                         Void doInBackground ( Void... voids ) {
-                            handleTriggerPress ( true );
+
+                            EventBus.getDefault ().post ( new RFIDTriggerEvent ( true ) );
+//                            handleTriggerPress ( true );
 //                            performInventory ();
                             return null;
                         }
@@ -420,7 +432,8 @@ class BaseActivity_RFID extends AppCompatActivity implements Readers.RFIDReaderE
                         @Override
                         protected
                         Void doInBackground ( Void... voids ) {
-                            handleTriggerPress ( false );
+                            EventBus.getDefault ().post ( new RFIDTriggerEvent ( false ) );
+//                            handleTriggerPress ( false );
 //                            stopInventory ();
                             return null;
                         }
@@ -434,7 +447,8 @@ class BaseActivity_RFID extends AppCompatActivity implements Readers.RFIDReaderE
             @Override
             protected
             Void doInBackground ( TagData[]... params ) {
-                handleTagdata ( params[ 0 ] );
+                EventBus.getDefault ().post ( new RFIDTagReadEvent ( params[0] ) );
+//                handleTagdata ( params[ 0 ] );
                 return null;
             }
         }
@@ -470,7 +484,7 @@ class BaseActivity_RFID extends AppCompatActivity implements Readers.RFIDReaderE
                     "CreateInstanceTask" );
             // Based on support available on host device choose the reader type
             InvalidUsageException invalidUsageException = null;
-            readers = new Readers ( BaseActivity_RFID.this ,
+            readers = new Readers ( context ,
                     ENUM_TRANSPORT.ALL );
             try {
                 availableRFIDReaderList = readers.GetAvailableRFIDReaderList ( );
@@ -482,7 +496,7 @@ class BaseActivity_RFID extends AppCompatActivity implements Readers.RFIDReaderE
                 readers.Dispose ( );
                 readers = null;
                 if ( readers == null ) {
-                    readers = new Readers ( BaseActivity_RFID.this ,
+                    readers = new Readers ( context,
                             ENUM_TRANSPORT.BLUETOOTH );
                 }
             }

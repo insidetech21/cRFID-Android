@@ -111,5 +111,7 @@ dependencies {
 
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0'
+
+    implementation 'org.greenrobot:eventbus:3.3.1'
 }
 

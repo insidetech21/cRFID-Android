@@ -166,7 +166,6 @@ class MaterialTagPair_ItemDetail extends Fragment {
             public
             void onChanged ( String tagData ) {
                 tagidTV.setText (tagData );
-                Toast.makeText ( requireContext (),"data: "+tagData,Toast.LENGTH_SHORT ).show ();
             }
         });
 
