@@ -27,6 +27,7 @@ import com.example.crfid.data.retrofit.ApiService;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Item;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Response;
 import com.example.crfid.viewmodels.MaterialTagPair_ViewModel;
+import com.example.crfid.viewmodels.ShareTagData_ViewModel;
 import com.zebra.rfid.api3.TagData;
 
 import java.util.List;
@@ -41,10 +42,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public
-class MaterialTagUnpair_ItemDetail extends BaseFragment_RFID {
+class MaterialTagUnpair_ItemDetail extends Fragment {
 
     TextView plantTV,matDovTV,poNoTV,matnrTV,unitTV,quantityTV,useridTV,matdescpTV,tagidTV;
     private Observer<List<String>> dataObserver;
+    ShareTagData_ViewModel shareTagDataViewModel2;
     String werks = "demo";
     String mblnr = "";
     String ebeln = "";
@@ -95,6 +97,8 @@ class MaterialTagUnpair_ItemDetail extends BaseFragment_RFID {
                 savedInstanceState );
         viewModeldetget=new ViewModelProvider ( requireActivity () ).get ( MaterialTagPair_ViewModel.class );
 
+        shareTagDataViewModel2=new ViewModelProvider ( getActivity () ).get ( ShareTagData_ViewModel.class );
+
         unpairB=(Button)((MaterialTagUnpair) getActivity ()).findViewById ( R.id.UnPairButton );
         plantTV=view.findViewById( R.id.plantidTVunpair);
         matDovTV=view.findViewById( R.id.matDocidTVunpair);
@@ -107,11 +111,18 @@ class MaterialTagUnpair_ItemDetail extends BaseFragment_RFID {
         tagidTV=view.findViewById( R.id.tagid_IDTVunpair);
 
 
+        shareTagDataViewModel2.getLiveTagData ().observe ( getViewLifecycleOwner (), new Observer<String>()
+        {
+
+            @Override
+            public
+            void onChanged ( String tagData ) {
+                tagidTV.setText (tagData );
+            }
+        });
 
 
-        if(!isReaderConnected ()){
-            InitSDK ();
-        }
+
 
         progressBar=view.findViewById( R.id.progress_circulardetailunpair);
         pleasewait=view.findViewById( R.id.pleasewait4564csdunpair);
@@ -312,17 +323,7 @@ class MaterialTagUnpair_ItemDetail extends BaseFragment_RFID {
         } );
     }
 
-    @Override
-    protected
-    void handleTriggerPress ( boolean pressed ) {
 
-    }
-
-    @Override
-    protected
-    void handleTagdata ( TagData[] tagData ) {
-
-    }
 
 
 
@@ -330,20 +331,20 @@ class MaterialTagUnpair_ItemDetail extends BaseFragment_RFID {
     public
     void onPause () {
         super.onPause ( );
-        onPause2 ();
+
     }
 
     @Override
     public
     void onDestroy () {
         super.onDestroy ( );
-        onDestroy2 ();
+
     }
 
     @Override
     public
     void onResume () {
         super.onResume ( );
-        onResume2 ();
+
     }
 }
