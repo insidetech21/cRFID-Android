@@ -34,205 +34,133 @@ import java.util.ArrayList;
 
 public abstract
 class BaseFragment_RFID extends Fragment implements Readers.RFIDReaderEventHandler {
-final static String TAG = "RFID_SAMPLE";
-// RFID Reader
-private static Readers readers;
-private static ArrayList<ReaderDevice> availableRFIDReaderList;
-private static ReaderDevice readerDevice;
-private static RFIDReader reader;
-        // UI and context
+    final static String TAG = "RFID_SAMPLE";
+    // RFID Reader
+    private static Readers readers;
+    private static ArrayList<ReaderDevice> availableRFIDReaderList;
+    private static ReaderDevice readerDevice;
+    private static RFIDReader reader;
+    // UI and context
 //    TextView textView;
-        // In case of RFD8500 change reader name with intended device below from list of paired RFD8500
-        String readerName = "RFD4031-G10B700-JP";
-private EventHandler eventHandler;
-// general
-private int MAX_POWER = 270;
+    // In case of RFD8500 change reader name with intended device below from list of paired RFD8500
+    String readerName = "RFD4031-G10B700-JP";
+    private EventHandler eventHandler;
+    // general
+    private int MAX_POWER = 270;
 
 
-
-protected void InitSDK () {
+    protected
+    void InitSDK () {
         Log.d ( TAG ,
-        "InitSDK" );
+                "InitSDK" );
         if ( readers == null ) {
-        new CreateInstanceTask ( ).execute ( );
+            new CreateInstanceTask ( ).execute ( );
         } else
-        connectReader ( );
-        }
-protected synchronized
-    void connectReader () {
-            if ( !isReaderConnected ( ) ) {
-            new ConnectionTask ( ).execute ( );
-            }
-            }
-
-@Override
-public
-    void RFIDReaderAppeared ( ReaderDevice readerDevice ) {
-            Log.d ( TAG ,
-            "RFIDReaderAppeared " + readerDevice.getName ( ) );
             connectReader ( );
-            }
+    }
 
-@Override
-public
+    protected synchronized
+    void connectReader () {
+        if ( !isReaderConnected ( ) ) {
+            new ConnectionTask ( ).execute ( );
+        }
+    }
+
+    @Override
+    public
+    void RFIDReaderAppeared ( ReaderDevice readerDevice ) {
+        Log.d ( TAG ,
+                "RFIDReaderAppeared " + readerDevice.getName ( ) );
+        connectReader ( );
+    }
+
+    @Override
+    public
     void RFIDReaderDisappeared ( ReaderDevice readerDevice ) {
-            Log.d ( TAG ,
-            "RFIDReaderDisappeared " + readerDevice.getName ( ) );
-            if ( readerDevice.getName ( ).equals ( reader.getHostName ( ) ) )
+        Log.d ( TAG ,
+                "RFIDReaderDisappeared " + readerDevice.getName ( ) );
+        if ( readerDevice.getName ( ).equals ( reader.getHostName ( ) ) )
             disconnect ( );
-            }
+    }
 
-protected synchronized
+    protected synchronized
     String connect () {
-            if ( reader != null ) {
+        if ( reader != null ) {
             Log.d ( TAG ,
-            "connect " + reader.getHostName ( ) );
+                    "connect " + reader.getHostName ( ) );
             try {
-            if ( !reader.isConnected ( ) ) {
-            // Establish connection to the RFID Reader
-            reader.connect ( );
-            ConfigureReader ( );
-            if ( reader.isConnected ( ) ) {
-            return "Connected: " + reader.getHostName ( );
-            }
-            }
+                if ( !reader.isConnected ( ) ) {
+                    // Establish connection to the RFID Reader
+                    reader.connect ( );
+                    ConfigureReader ( );
+                    if ( reader.isConnected ( ) ) {
+                        return "Connected: " + reader.getHostName ( );
+                    }
+                }
             }
             catch ( InvalidUsageException e ) {
-            e.printStackTrace ( );
+                e.printStackTrace ( );
             }
             catch ( OperationFailureException e ) {
-            e.printStackTrace ( );
-            Log.d ( TAG ,
-            "OperationFailureException " + e.getVendorMessage ( ) );
-            String des = e.getResults ( ).toString ( );
-            return "Connection failed" + e.getVendorMessage ( ) + " " + des;
+                e.printStackTrace ( );
+                Log.d ( TAG ,
+                        "OperationFailureException " + e.getVendorMessage ( ) );
+                String des = e.getResults ( ).toString ( );
+                return "Connection failed" + e.getVendorMessage ( ) + " " + des;
             }
-            }
-            return "";
-            }
+        }
+        return "";
+    }
 
-protected
+    protected
     void ConfigureReader () {
-            Log.d ( TAG ,
-            "ConfigureReader " + reader.getHostName ( ) );
-            if ( reader.isConnected ( ) ) {
+        Log.d ( TAG ,
+                "ConfigureReader " + reader.getHostName ( ) );
+        if ( reader.isConnected ( ) ) {
             TriggerInfo triggerInfo = new TriggerInfo ( );
             triggerInfo.StartTrigger.setTriggerType ( START_TRIGGER_TYPE.START_TRIGGER_TYPE_IMMEDIATE );
             triggerInfo.StopTrigger.setTriggerType ( STOP_TRIGGER_TYPE.STOP_TRIGGER_TYPE_IMMEDIATE );
             try {
-            // receive events from reader
-            if ( eventHandler == null )
-            eventHandler = new EventHandler ( );
-            reader.Events.addEventsListener ( eventHandler );
-            // HH event
-            reader.Events.setHandheldEvent ( true );
-            // tag event with tag data
-            reader.Events.setTagReadEvent ( true );
-            reader.Events.setAttachTagDataWithReadEvent ( false );
-            // set trigger mode as rfid so scanner beam will not come
-            reader.Config.setTriggerMode ( ENUM_TRIGGER_MODE.RFID_MODE ,
-            true );
-            // set start and stop triggers
-            reader.Config.setStartTrigger ( triggerInfo.StartTrigger );
-            reader.Config.setStopTrigger ( triggerInfo.StopTrigger );
-            // power levels are index based so maximum power supported get the last one
-            MAX_POWER = reader.ReaderCapabilities.getTransmitPowerLevelValues ( ).length - 1;
-            // set antenna configurations
-            Antennas.AntennaRfConfig config = reader.Config.Antennas.getAntennaRfConfig ( 1 );
-            config.setTransmitPowerIndex ( MAX_POWER );
-            config.setrfModeTableIndex ( 0 );
-            config.setTari ( 0 );
-            reader.Config.Antennas.setAntennaRfConfig ( 1 ,
-            config );
-            // Set the singulation control
-            Antennas.SingulationControl s1_singulationControl = reader.Config.Antennas.getSingulationControl ( 1 );
-            s1_singulationControl.setSession ( SESSION.SESSION_S0 );
-            s1_singulationControl.Action.setInventoryState ( INVENTORY_STATE.INVENTORY_STATE_A );
-            s1_singulationControl.Action.setSLFlag ( SL_FLAG.SL_ALL );
-            reader.Config.Antennas.setSingulationControl ( 1 ,
-            s1_singulationControl );
-            // delete any prefilters
-            reader.Actions.PreFilters.deleteAll ( );
-            //
+                // receive events from reader
+                if ( eventHandler == null )
+                    eventHandler = new EventHandler ( );
+                reader.Events.addEventsListener ( eventHandler );
+                // HH event
+                reader.Events.setHandheldEvent ( true );
+                // tag event with tag data
+                reader.Events.setTagReadEvent ( true );
+                reader.Events.setAttachTagDataWithReadEvent ( false );
+                // set trigger mode as rfid so scanner beam will not come
+                reader.Config.setTriggerMode ( ENUM_TRIGGER_MODE.RFID_MODE ,
+                        true );
+                // set start and stop triggers
+                reader.Config.setStartTrigger ( triggerInfo.StartTrigger );
+                reader.Config.setStopTrigger ( triggerInfo.StopTrigger );
+                // power levels are index based so maximum power supported get the last one
+                MAX_POWER = reader.ReaderCapabilities.getTransmitPowerLevelValues ( ).length - 1;
+                // set antenna configurations
+                Antennas.AntennaRfConfig config = reader.Config.Antennas.getAntennaRfConfig ( 1 );
+                config.setTransmitPowerIndex ( MAX_POWER );
+                config.setrfModeTableIndex ( 0 );
+                config.setTari ( 0 );
+                reader.Config.Antennas.setAntennaRfConfig ( 1 ,
+                        config );
+                // Set the singulation control
+                Antennas.SingulationControl s1_singulationControl = reader.Config.Antennas.getSingulationControl ( 1 );
+                s1_singulationControl.setSession ( SESSION.SESSION_S0 );
+                s1_singulationControl.Action.setInventoryState ( INVENTORY_STATE.INVENTORY_STATE_A );
+                s1_singulationControl.Action.setSLFlag ( SL_FLAG.SL_ALL );
+                reader.Config.Antennas.setSingulationControl ( 1 ,
+                        s1_singulationControl );
+                // delete any prefilters
+                reader.Actions.PreFilters.deleteAll ( );
+                //
             }
             catch ( InvalidUsageException | OperationFailureException e ) {
-            e.printStackTrace ( );
-            }
-            }
-            }
-
-
-public
-class EventHandler implements RfidEventsListener {
-    // Read Event Notification
-    public
-    void eventReadNotify ( RfidReadEvents e ) {
-        // Recommended to use new method getReadTagsEx for better performance in case of large tag population
-        TagData[] myTags = reader.Actions.getReadTags ( 100 );
-        if ( myTags != null ) {
-            for (int index = 0; index < myTags.length; index++) {
-                Log.d ( TAG ,
-                        "Tag ID " + myTags[ index ].getTagID ( ) );
-                if ( myTags[ index ].getOpCode ( ) == ACCESS_OPERATION_CODE.ACCESS_OPERATION_READ &&
-                        myTags[ index ].getOpStatus ( ) == ACCESS_OPERATION_STATUS.ACCESS_SUCCESS ) {
-                    if ( myTags[ index ].getMemoryBankData ( ).length ( ) > 0 ) {
-                        Log.d ( TAG ,
-                                " Mem Bank Data " + myTags[ index ].getMemoryBankData ( ) );
-                    }
-                }
-                if ( myTags[ index ].isContainsLocationInfo ( ) ) {
-                    short dist = myTags[ index ].LocationInfo.getRelativeDistance ( );
-                    Log.d ( TAG ,
-                            "Tag relative distance " + dist );
-                }
-            }
-            // possibly if operation was invoked from async task and still busy
-            // handle tag data responses on parallel thread thus THREAD_POOL_EXECUTOR
-            new EventHandler.AsyncDataUpdate ( ).executeOnExecutor ( AsyncTask.THREAD_POOL_EXECUTOR ,
-                    myTags );
-        }
-    }
-    private
-    class AsyncDataUpdate extends AsyncTask<TagData[], Void, Void> {
-        @Override
-        protected
-        Void doInBackground ( TagData[]... params ) {
-            handleTagdata ( params[ 0 ] );
-            return null;
-        }
-    }
-
-    // Status Event Notification
-    public
-    void eventStatusNotify ( RfidStatusEvents rfidStatusEvents ) {
-        Log.d ( TAG ,
-                "Status Notification: " + rfidStatusEvents.StatusEventData.getStatusEventType ( ) );
-        if ( rfidStatusEvents.StatusEventData.getStatusEventType ( ) == STATUS_EVENT_TYPE.HANDHELD_TRIGGER_EVENT ) {
-            if ( rfidStatusEvents.StatusEventData.HandheldTriggerEventData.getHandheldEvent ( ) == HANDHELD_TRIGGER_EVENT_TYPE.HANDHELD_TRIGGER_PRESSED ) {
-                new AsyncTask<Void, Void, Void> ( ) {
-                    @Override
-                    protected
-                    Void doInBackground ( Void... voids ) {
-                        handleTriggerPress ( true );
-//                            performInventory ();
-                        return null;
-                    }
-                }.execute ( );
-            }
-            if ( rfidStatusEvents.StatusEventData.HandheldTriggerEventData.getHandheldEvent ( ) == HANDHELD_TRIGGER_EVENT_TYPE.HANDHELD_TRIGGER_RELEASED ) {
-                new AsyncTask<Void, Void, Void> ( ) {
-                    @Override
-                    protected
-                    Void doInBackground ( Void... voids ) {
-                        handleTriggerPress ( false );
-//                            stopInventory ();
-                        return null;
-                    }
-                }.execute ( );
+                e.printStackTrace ( );
             }
         }
     }
-}
 
     private synchronized
     void disconnect () {
@@ -242,7 +170,7 @@ class EventHandler implements RfidEventsListener {
             if ( reader != null ) {
                 reader.Events.removeEventsListener ( eventHandler );
                 reader.disconnect ( );
-                requireActivity ().runOnUiThread ( new Runnable ( ) {
+                requireActivity ( ).runOnUiThread ( new Runnable ( ) {
                     @Override
                     public
                     void run () {
@@ -291,8 +219,12 @@ class EventHandler implements RfidEventsListener {
             e.printStackTrace ( );
         }
     }
-    protected abstract void handleTriggerPress(boolean pressed);
-    protected abstract void handleTagdata ( TagData[] tagData ) ;
+
+    protected abstract
+    void handleTriggerPress ( boolean pressed );
+
+    protected abstract
+    void handleTagdata ( TagData[] tagData );
 
     public synchronized
     void stopInventory () {
@@ -310,30 +242,6 @@ class EventHandler implements RfidEventsListener {
         }
     }
 
-
-protected
-class ConnectionTask extends AsyncTask<Void, Void, String> {
-    @Override
-    protected
-    String doInBackground ( Void... voids ) {
-        Log.d ( TAG ,
-                "ConnectionTask" );
-        GetAvailableReader ( );
-        if ( reader != null )
-            return connect ( );
-        return "Failed to find or connect reader";
-    }
-
-    @Override
-    protected
-    void onPostExecute ( String result ) {
-        super.onPostExecute ( result );
-//            textView.setText ( result );
-    }
-}
-
-
-
     public
     String onResume2 () {
         return connect ( );
@@ -348,8 +256,6 @@ class ConnectionTask extends AsyncTask<Void, Void, String> {
     void onDestroy2 () {
         dispose ( );
     }
-
-
 
     private synchronized
     void GetAvailableReader () {
@@ -382,7 +288,9 @@ class ConnectionTask extends AsyncTask<Void, Void, String> {
             }
         }
     }
-    protected boolean isReaderConnected () {
+
+    protected
+    boolean isReaderConnected () {
         if ( reader != null && reader.isConnected ( ) )
             return true;
         else {
@@ -392,90 +300,195 @@ class ConnectionTask extends AsyncTask<Void, Void, String> {
         }
     }
 
-protected
-class CreateInstanceTask extends AsyncTask<Void, Void, Void> {
-    @Override
-    protected
-    Void doInBackground ( Void... voids ) {
-        Log.d ( TAG ,
-                "CreateInstanceTask" );
-        // Based on support available on host device choose the reader type
-        InvalidUsageException invalidUsageException = null;
-        readers = new Readers (  requireContext (),
-                ENUM_TRANSPORT.ALL );
+    public
+    void changeToSingleScanMode () {
         try {
-            availableRFIDReaderList = readers.GetAvailableRFIDReaderList ( );
+            TriggerInfo triggerInfo = new TriggerInfo ( );
+            triggerInfo.StopTrigger.setTriggerType ( STOP_TRIGGER_TYPE.STOP_TRIGGER_TYPE_TAG_OBSERVATION_WITH_TIMEOUT );
+            Long tagObservation = Long.parseLong ( "1" );
+            triggerInfo.StopTrigger.TagObservation.setN ( tagObservation.shortValue ( ) );
+            reader.Config.setStartTrigger ( triggerInfo.StartTrigger );
+            reader.Config.setStopTrigger ( triggerInfo.StopTrigger );
         }
         catch ( InvalidUsageException e ) {
             e.printStackTrace ( );
         }
-        if ( invalidUsageException != null ) {
-            readers.Dispose ( );
-            readers = null;
-            if ( readers == null ) {
-                readers = new Readers (  requireContext (),
-                        ENUM_TRANSPORT.BLUETOOTH );
-            }
+        catch ( OperationFailureException e ) {
+            e.printStackTrace ( );
         }
-        return null;
+
     }
 
-    @Override
-    protected
-    void onPostExecute ( Void aVoid ) {
-        super.onPostExecute ( aVoid );
-        connectReader ( );
-    }
-}
-
-    public void changeToSingleScanMode(){
+    public
+    void changeToBulkScanMode () {
         try {
-            TriggerInfo triggerInfo = new TriggerInfo();
-            triggerInfo.StopTrigger.setTriggerType(STOP_TRIGGER_TYPE.STOP_TRIGGER_TYPE_TAG_OBSERVATION_WITH_TIMEOUT);
-            Long tagObservation = Long.parseLong("1");
-            triggerInfo.StopTrigger.TagObservation.setN(tagObservation.shortValue());
-            reader.Config.setStartTrigger(triggerInfo.StartTrigger);
-            reader.Config.setStopTrigger(triggerInfo.StopTrigger);
-        } catch (InvalidUsageException e) {
-            e.printStackTrace();
-        } catch (OperationFailureException e) {
-            e.printStackTrace();
+            TriggerInfo triggerInfo = new TriggerInfo ( );
+            triggerInfo.StartTrigger.setTriggerType ( START_TRIGGER_TYPE.START_TRIGGER_TYPE_IMMEDIATE );
+            triggerInfo.StopTrigger.setTriggerType ( STOP_TRIGGER_TYPE.STOP_TRIGGER_TYPE_IMMEDIATE );
+            reader.Config.setStartTrigger ( triggerInfo.StartTrigger );
+            reader.Config.setStopTrigger ( triggerInfo.StopTrigger );
+        }
+        catch ( InvalidUsageException e ) {
+            e.printStackTrace ( );
+        }
+        catch ( OperationFailureException e ) {
+            e.printStackTrace ( );
         }
 
     }
 
-    public void changeToBulkScanMode(){
-        try {
-            TriggerInfo triggerInfo = new TriggerInfo();
-            triggerInfo.StartTrigger.setTriggerType(START_TRIGGER_TYPE.START_TRIGGER_TYPE_IMMEDIATE);
-            triggerInfo.StopTrigger.setTriggerType(STOP_TRIGGER_TYPE.STOP_TRIGGER_TYPE_IMMEDIATE);
-            reader.Config.setStartTrigger(triggerInfo.StartTrigger);
-            reader.Config.setStopTrigger(triggerInfo.StopTrigger);
-        } catch (InvalidUsageException e) {
-            e.printStackTrace();
-        } catch (OperationFailureException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void setReaderPower(int power){
-        AsyncTask task = new AsyncTask() {
+    public
+    void setReaderPower ( int power ) {
+        AsyncTask task = new AsyncTask ( ) {
             @Override
-            protected Object doInBackground(Object[] objects) {
+            protected
+            Object doInBackground ( Object[] objects ) {
                 try {
-                    Antennas.AntennaRfConfig antennaRfConfig = reader.Config.Antennas.getAntennaRfConfig(1);
-                    antennaRfConfig.setTransmitPowerIndex(power);
-                    reader.Config.Antennas.setAntennaRfConfig(1, antennaRfConfig);
+                    Antennas.AntennaRfConfig antennaRfConfig = reader.Config.Antennas.getAntennaRfConfig ( 1 );
+                    antennaRfConfig.setTransmitPowerIndex ( power );
+                    reader.Config.Antennas.setAntennaRfConfig ( 1 ,
+                            antennaRfConfig );
 //                    reader.Config.Antennas.getAntennaRfConfig(1).setTransmitPowerIndex(power);
-                } catch (InvalidUsageException e) {
-                    e.printStackTrace();
-                } catch (OperationFailureException e) {
-                    e.printStackTrace();
+                }
+                catch ( InvalidUsageException e ) {
+                    e.printStackTrace ( );
+                }
+                catch ( OperationFailureException e ) {
+                    e.printStackTrace ( );
                 }
                 return null;
             }
         };
-        task.execute();
+        task.execute ( );
+    }
+
+    public
+    class EventHandler implements RfidEventsListener {
+        // Read Event Notification
+        public
+        void eventReadNotify ( RfidReadEvents e ) {
+            // Recommended to use new method getReadTagsEx for better performance in case of large tag population
+            TagData[] myTags = reader.Actions.getReadTags ( 100 );
+            if ( myTags != null ) {
+                for (int index = 0; index < myTags.length; index++) {
+                    Log.d ( TAG ,
+                            "Tag ID " + myTags[ index ].getTagID ( ) );
+                    if ( myTags[ index ].getOpCode ( ) == ACCESS_OPERATION_CODE.ACCESS_OPERATION_READ &&
+                            myTags[ index ].getOpStatus ( ) == ACCESS_OPERATION_STATUS.ACCESS_SUCCESS ) {
+                        if ( myTags[ index ].getMemoryBankData ( ).length ( ) > 0 ) {
+                            Log.d ( TAG ,
+                                    " Mem Bank Data " + myTags[ index ].getMemoryBankData ( ) );
+                        }
+                    }
+                    if ( myTags[ index ].isContainsLocationInfo ( ) ) {
+                        short dist = myTags[ index ].LocationInfo.getRelativeDistance ( );
+                        Log.d ( TAG ,
+                                "Tag relative distance " + dist );
+                    }
+                }
+                // possibly if operation was invoked from async task and still busy
+                // handle tag data responses on parallel thread thus THREAD_POOL_EXECUTOR
+                new EventHandler.AsyncDataUpdate ( ).executeOnExecutor ( AsyncTask.THREAD_POOL_EXECUTOR ,
+                        myTags );
+            }
+        }
+
+        // Status Event Notification
+        public
+        void eventStatusNotify ( RfidStatusEvents rfidStatusEvents ) {
+            Log.d ( TAG ,
+                    "Status Notification: " + rfidStatusEvents.StatusEventData.getStatusEventType ( ) );
+            if ( rfidStatusEvents.StatusEventData.getStatusEventType ( ) == STATUS_EVENT_TYPE.HANDHELD_TRIGGER_EVENT ) {
+                if ( rfidStatusEvents.StatusEventData.HandheldTriggerEventData.getHandheldEvent ( ) == HANDHELD_TRIGGER_EVENT_TYPE.HANDHELD_TRIGGER_PRESSED ) {
+                    new AsyncTask<Void, Void, Void> ( ) {
+                        @Override
+                        protected
+                        Void doInBackground ( Void... voids ) {
+                            handleTriggerPress ( true );
+//                            performInventory ();
+                            return null;
+                        }
+                    }.execute ( );
+                }
+                if ( rfidStatusEvents.StatusEventData.HandheldTriggerEventData.getHandheldEvent ( ) == HANDHELD_TRIGGER_EVENT_TYPE.HANDHELD_TRIGGER_RELEASED ) {
+                    new AsyncTask<Void, Void, Void> ( ) {
+                        @Override
+                        protected
+                        Void doInBackground ( Void... voids ) {
+                            handleTriggerPress ( false );
+//                            stopInventory ();
+                            return null;
+                        }
+                    }.execute ( );
+                }
+            }
+        }
+
+        private
+        class AsyncDataUpdate extends AsyncTask<TagData[], Void, Void> {
+            @Override
+            protected
+            Void doInBackground ( TagData[]... params ) {
+                handleTagdata ( params[ 0 ] );
+                return null;
+            }
+        }
+    }
+
+    protected
+    class ConnectionTask extends AsyncTask<Void, Void, String> {
+        @Override
+        protected
+        String doInBackground ( Void... voids ) {
+            Log.d ( TAG ,
+                    "ConnectionTask" );
+            GetAvailableReader ( );
+            if ( reader != null )
+                return connect ( );
+            return "Failed to find or connect reader";
+        }
+
+        @Override
+        protected
+        void onPostExecute ( String result ) {
+            super.onPostExecute ( result );
+//            textView.setText ( result );
+        }
+    }
+
+    protected
+    class CreateInstanceTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected
+        Void doInBackground ( Void... voids ) {
+            Log.d ( TAG ,
+                    "CreateInstanceTask" );
+            // Based on support available on host device choose the reader type
+            InvalidUsageException invalidUsageException = null;
+            readers = new Readers ( requireContext ( ) ,
+                    ENUM_TRANSPORT.ALL );
+            try {
+                availableRFIDReaderList = readers.GetAvailableRFIDReaderList ( );
+            }
+            catch ( InvalidUsageException e ) {
+                e.printStackTrace ( );
+            }
+            if ( invalidUsageException != null ) {
+                readers.Dispose ( );
+                readers = null;
+                if ( readers == null ) {
+                    readers = new Readers ( requireContext ( ) ,
+                            ENUM_TRANSPORT.BLUETOOTH );
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected
+        void onPostExecute ( Void aVoid ) {
+            super.onPostExecute ( aVoid );
+            connectReader ( );
+        }
     }
 }

@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -23,6 +24,7 @@ import android.widget.Toast;
 
 import com.example.crfid.Material_Tag_Pair;
 
+import com.example.crfid.R;
 import com.example.crfid.common.BasicAuthInterceptor;
 import com.example.crfid.common.CommonFunctions;
 import com.example.crfid.data.retrofit.ApiService;
@@ -30,7 +32,7 @@ import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Item;
 import com.example.crfid.model.materialTagPairModel.MaterialTagPair_Response;
 import com.example.crfid.rfid.BaseFragment_RFID;
 import com.example.crfid.viewmodels.MaterialTagPair_ViewModel;
-import com.example.user.crfid.R;
+import com.example.crfid.viewmodels.ShareTagData_ViewModel;
 import com.zebra.rfid.api3.TagData;
 
 import java.util.List;
@@ -87,6 +89,9 @@ class MaterialTagPair_ItemDetail extends BaseFragment_RFID {
     //    RFIDHandler rfidHandler;
     Button startTest;
     private Observer<List<String>> dataObserver;
+    private Observer<TagData[]> tagObserver;
+
+    ShareTagData_ViewModel shareTagDataViewModel2;
 
     @Override
     public
@@ -107,6 +112,9 @@ class MaterialTagPair_ItemDetail extends BaseFragment_RFID {
 
         pairB = (Button) ((Material_Tag_Pair) getActivity ( )).findViewById ( R.id.PairButton );
         rFIDStatusText = (TextView) ((Material_Tag_Pair) getActivity ( )).findViewById ( R.id.statusTextViewRFID );
+
+
+        shareTagDataViewModel2=new ViewModelProvider ( getActivity () ).get ( ShareTagData_ViewModel.class );
 
 
         plantTV = view.findViewById ( R.id.plantidTV );
@@ -149,6 +157,27 @@ class MaterialTagPair_ItemDetail extends BaseFragment_RFID {
                 InitSDK ( );
             }
         }
+
+
+        shareTagDataViewModel2.getLiveTagData ().observe ( getViewLifecycleOwner (), new Observer<String>()
+        {
+
+            @Override
+            public
+            void onChanged ( String tagData ) {
+                tagidTV.setText (tagData );
+                Toast.makeText ( requireContext (),"data: "+tagData,Toast.LENGTH_SHORT ).show ();
+            }
+        });
+
+//        tagObserver=new Observer<TagData[]> ( ) {
+//            @Override
+//            public
+//            void onChanged ( TagData[] tagData ) {
+//                tagidTV.setText ( tagData[0].getTagID () );
+//            }
+//        };
+//        shareTagDataViewModel2.getLiveTagData ().observe ( getViewLifecycleOwner (),tagObserver );
 
         dataObserver = new Observer<List<String>> ( ) {
             @Override
@@ -220,6 +249,8 @@ class MaterialTagPair_ItemDetail extends BaseFragment_RFID {
 
     }
 
+
+
     @Override
     public
     void onStart () {
@@ -254,28 +285,28 @@ class MaterialTagPair_ItemDetail extends BaseFragment_RFID {
 //                grantResults );
 //    }
 
-    @Override
-    public
-    void onPause () {
-        super.onPause ( );
-        onPause2 ( );
-    }
-
-    //
-    @Override
-    public
-    void onDestroy () {
-        super.onDestroy ( );
-        onDestroy2 ( );
-
-    }
-
+//    @Override
+//    public
+//    void onPause () {
+//        super.onPause ( );
+//        onPause2 ( );
+//    }
+//
+//    //
+//    @Override
+//    public
+//    void onDestroy () {
+//        super.onDestroy ( );
+//        onDestroy2 ( );
+//
+//    }
+//
     //
     @Override
     public
     void onResume () {
         super.onResume ( );
-        onResume2 ( );
+//        onResume2 ( );
     }
 
     @Override

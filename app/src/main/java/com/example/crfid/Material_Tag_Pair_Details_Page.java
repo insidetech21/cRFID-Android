@@ -22,7 +22,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import com.example.user.crfid.R;
+import com.example.crfid.R;
 public
 class Material_Tag_Pair_Details_Page extends AppCompatActivity {
 //Mohnish

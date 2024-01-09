@@ -11,7 +11,7 @@ import com.example.crfid.materialTagPair_Fragments.adapter.MatTagPair_Frag_Adapt
 import com.example.crfid.materialTagUnpair_Fragments.adapter.MatTagUnPair_Frag_adaptor;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.example.user.crfid.R;
+import com.example.crfid.R;
 public class MaterialTagUnpair extends AppCompatActivity {
     TabLayout tabLayout;
     ViewPager2 viewPager2;

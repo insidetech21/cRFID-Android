@@ -7,10 +7,11 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.lifecycle.ViewModelProvider;
 
 
 import com.example.crfid.rfid.interfaces_RFID.RFID_Context;
+import com.example.crfid.viewmodels.ConnectionStatus_ViewModel;
 import com.zebra.rfid.api3.ACCESS_OPERATION_CODE;
 import com.zebra.rfid.api3.ACCESS_OPERATION_STATUS;
 import com.zebra.rfid.api3.Antennas;
@@ -51,10 +52,13 @@ class BaseActivity_RFID extends AppCompatActivity implements Readers.RFIDReaderE
     private EventHandler eventHandler;
     // general
     private int MAX_POWER = 270;
+    ConnectionStatus_ViewModel connectionStatusViewModel;
 
     @Override
     protected  void onCreate(Bundle savedInstanceState) {
         super.onCreate ( savedInstanceState );
+
+        connectionStatusViewModel=new ViewModelProvider ( this ).get ( ConnectionStatus_ViewModel.class );
 
     }
 
@@ -420,11 +424,13 @@ class BaseActivity_RFID extends AppCompatActivity implements Readers.RFIDReaderE
         }
     }
    protected boolean isReaderConnected () {
-        if ( reader != null && reader.isConnected ( ) )
-            return true;
+        if ( reader != null && reader.isConnected ( ) ){
+            connectionStatusViewModel.setconnectStatus ( "Connected" );
+            return true;}
         else {
             Log.d ( TAG ,
                     "reader is not connected" );
+            connectionStatusViewModel.setconnectStatus ( "Disonnected" );
             return false;
         }
     }

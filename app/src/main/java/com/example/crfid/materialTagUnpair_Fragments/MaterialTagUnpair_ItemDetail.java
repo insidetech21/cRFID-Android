@@ -20,7 +20,7 @@ import android.widget.Toast;
 import com.example.crfid.MaterialTagUnpair;
 import com.example.crfid.Material_Tag_Pair;
 import com.example.crfid.rfid.BaseFragment_RFID;
-import com.example.user.crfid.R;
+import com.example.crfid.R;
 import com.example.crfid.common.BasicAuthInterceptor;
 import com.example.crfid.common.CommonFunctions;
 import com.example.crfid.data.retrofit.ApiService;
@@ -330,11 +330,20 @@ class MaterialTagUnpair_ItemDetail extends BaseFragment_RFID {
     public
     void onPause () {
         super.onPause ( );
+        onPause2 ();
     }
 
     @Override
     public
     void onDestroy () {
         super.onDestroy ( );
+        onDestroy2 ();
+    }
+
+    @Override
+    public
+    void onResume () {
+        super.onResume ( );
+        onResume2 ();
     }
 }

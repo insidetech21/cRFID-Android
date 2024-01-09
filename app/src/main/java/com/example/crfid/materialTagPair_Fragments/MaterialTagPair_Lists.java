@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.example.crfid.Material_Tag_Pair;
 import com.example.crfid.Material_Tag_Pair_Details_Page;
-import com.example.user.crfid.R;
+import com.example.crfid.R;
 import com.example.crfid.common.BasicAuthInterceptor;
 import com.example.crfid.common.CommonFunctions;
 import com.example.crfid.data.retrofit.ApiService;

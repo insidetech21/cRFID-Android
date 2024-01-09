@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
 import android.content.Context;
@@ -14,11 +16,14 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.crfid.rfid.BaseActivity_RFID;
 import com.example.crfid.rfid.RFIDHandler;
 import com.example.crfid.rfid.interfaces_RFID.RFID_Context;
-import com.example.user.crfid.R;
+import com.example.crfid.R;
+import com.example.crfid.viewmodels.ConnectionStatus_ViewModel;
+import com.example.crfid.viewmodels.ShareTagData_ViewModel;
 import com.zebra.rfid.api3.TagData;
 
 public
@@ -26,6 +31,7 @@ class HomePage extends BaseActivity_RFID {
 
 
     private static final int BLUETOOTH_PERMISSION_REQUEST_CODE = 100;
+    ConnectionStatus_ViewModel connectionStatusViewModel;
     //    RFIDHandler rfidHandler;
     CardView readMaterial, locateCard, assetInOutCard, matTagPair, matTagUnPair, cycleCounting;
     TextView status;
@@ -47,12 +53,25 @@ class HomePage extends BaseActivity_RFID {
         // RFID Handler
 //        rfidHandler = new RFIDHandler();
 
+        connectionStatusViewModel = new ViewModelProvider ( this ).get ( ConnectionStatus_ViewModel.class );
+
+        connectionStatusViewModel.getconnectStatus ( ).observe ( this ,
+                new Observer<String> ( ) {
+                    @Override
+                    public
+                    void onChanged ( String s ) {
+                        status.setText ( s );
+//                status.setTextColor ( Color.GREEN );
+                    }
+                } );
+
 
         if ( !isReaderConnected ( ) ) {
 //            status.setText ( "Disconnected" );
 //            status.setTextColor ( Color.RED );
             //Scanner Initializations
             //Handling Runtime BT permissions for Android 12 and higher
+
 
             if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ) {
                 if ( ContextCompat.checkSelfPermission ( this ,
@@ -70,13 +89,16 @@ class HomePage extends BaseActivity_RFID {
             }
         }
 
-        if ( isReaderConnected ( ) ) {
-            status.setText ( "Connected" );
-            status.setTextColor ( Color.GREEN );
-        } else {
-            status.setText ( "Disconnected" );
-            status.setTextColor ( Color.RED );
-        }
+//        if ( isReaderConnected ( ) ) {
+//
+//
+//
+//            status.setText ( "Connected" );
+//            status.setTextColor ( Color.GREEN );
+//        } else {
+//            status.setText ( "Disconnected" );
+//            status.setTextColor ( Color.RED );
+//        }
 
         readMaterial.setOnClickListener ( new View.OnClickListener ( ) {
             @Override
@@ -145,7 +167,6 @@ class HomePage extends BaseActivity_RFID {
         onPause2 ( );
     }
 
-    //
     @Override
     public
     void onDestroy () {
@@ -153,13 +174,14 @@ class HomePage extends BaseActivity_RFID {
         onDestroy2 ( );
     }
 
-//    @Override
-//    public
-//    void onResume () {
-//        super.onResume ( );
-////        rfidHandler.onResume ();
-//
-//    }
+    @Override
+    public
+    void onResume () {
+        super.onResume ( );
+//        rfidHandler.onResume ();
+        onResume2 ( );
+
+    }
 
     @Override
     protected
@@ -167,11 +189,18 @@ class HomePage extends BaseActivity_RFID {
         super.onPostResume ( );
         onResume2 ( );
         if ( isReaderConnected ( ) ) {
-            status.setText ( "Connected" );
-            status.setTextColor ( Color.GREEN );
+            connectionStatusViewModel.getconnectStatus ( ).observe ( this ,
+                    new Observer<String> ( ) {
+                        @Override
+                        public
+                        void onChanged ( String s ) {
+                            status.setText ( s );
+//                status.setTextColor ( Color.GREEN );
+                        }
+                    } );
         } else {
             status.setText ( "Disconnected" );
-            status.setTextColor ( Color.RED );
+//            status.setTextColor ( Color.RED );
         }
     }
 
@@ -212,11 +241,17 @@ class HomePage extends BaseActivity_RFID {
                 public
                 void run () {
 //                    tagidTV.setText ( "" );
+                    Toast.makeText ( getApplicationContext ( ) ,
+                            "Trigger Pressed  !!" ,
+                            Toast.LENGTH_SHORT ).show ( );
                 }
             } );
-            performInventory ( );
-        } else
-            stopInventory ( );
+//            performInventory ( );
+
+
+        } else {
+//            stopInventory ( );
+        }
     }
 
 }

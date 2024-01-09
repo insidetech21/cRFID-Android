@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.crfid.Material_Tag_Pair;
-import com.example.user.crfid.R;
+import com.example.crfid.R;
 import com.example.crfid.common.BasicAuthInterceptor;
 import com.example.crfid.common.CommonFunctions;
 import com.example.crfid.data.retrofit.ApiService;
@@ -79,10 +79,8 @@ class MaterialTagPair_ItemFrag extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate ( R.layout.fragment_material_tag_pair__item ,
                 container ,
-                
                 false );
     }
-
     @Override
     public
     void onViewCreated ( @NonNull View view , @Nullable Bundle savedInstanceState ) {
