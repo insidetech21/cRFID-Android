@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 
+import com.example.crfid.rfid.events.ConnectionStatusEvent;
 import com.example.crfid.rfid.events.RFIDTagReadEvent;
 import com.example.crfid.rfid.events.RFIDTriggerEvent;
 import com.example.crfid.rfid.interfaces_RFID.RFID_Context;
@@ -307,10 +308,13 @@ class BaseActivity_RFID extends AppCompatActivity implements Readers.RFIDReaderE
     protected
     boolean isReaderConnected () {
         if ( reader != null && reader.isConnected ( ) )
-            return true;
+        {
+            EventBus.getDefault ().post ( new ConnectionStatusEvent ( true ) );
+            return true;}
         else {
             Log.d ( TAG ,
                     "reader is not connected" );
+            EventBus.getDefault ().post ( new ConnectionStatusEvent ( false ) );
             return false;
         }
     }

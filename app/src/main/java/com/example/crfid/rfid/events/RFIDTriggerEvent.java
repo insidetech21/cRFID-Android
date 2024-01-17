@@ -1,17 +1,22 @@
 package com.example.crfid.rfid.events;
 
-public class RFIDTriggerEvent {
+public
+class RFIDTriggerEvent {
 
     boolean pressed;
-    public RFIDTriggerEvent(boolean pressed) {
+
+    public
+    RFIDTriggerEvent ( boolean pressed ) {
         this.pressed = pressed;
     }
 
-    public boolean isPressed() {
+    public
+    boolean isPressed () {
         return pressed;
     }
 
-    public void setPressed(boolean pressed) {
+    public
+    void setPressed ( boolean pressed ) {
         this.pressed = pressed;
     }
 }

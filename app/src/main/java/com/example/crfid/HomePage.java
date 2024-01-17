@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.crfid.rfid.BaseActivity_RFID;
 import com.example.crfid.rfid.RFIDHandler;
+import com.example.crfid.rfid.events.ConnectionStatusEvent;
 import com.example.crfid.rfid.events.RFIDTagReadEvent;
 import com.example.crfid.rfid.events.RFIDTriggerEvent;
 import com.example.crfid.rfid.interfaces_RFID.RFID_Context;
@@ -39,7 +40,9 @@ class HomePage extends BaseActivity_RFID {
     private static final int BLUETOOTH_PERMISSION_REQUEST_CODE = 100;
     ConnectionStatus_ViewModel connectionStatusViewModel;
     //    RFIDHandler rfidHandler;
-    CardView readMaterial, locateCard, assetInOutCard, matTagPair, matTagUnPair, cycleCounting;
+    CardView readMaterial, locateCard,
+//            assetInOutCard,
+            matTagPair, matTagUnPair, cycleCounting;
     TextView status;
 
     @Override
@@ -51,7 +54,7 @@ class HomePage extends BaseActivity_RFID {
         onCreate ( this );
         readMaterial = findViewById ( R.id.readAssets );
         locateCard = findViewById ( R.id.locateAssets );
-        assetInOutCard = findViewById ( R.id.assetInOut );
+//        assetInOutCard = findViewById ( R.id.assetInOut );
         cycleCounting = findViewById ( R.id.cycleCounting );
         matTagPair = findViewById ( R.id.assetTagPair );
         matTagUnPair = findViewById ( R.id.assetTagUnpair );
@@ -74,11 +77,6 @@ class HomePage extends BaseActivity_RFID {
 
 
         if ( !isReaderConnected ( ) ) {
-//            status.setText ( "Disconnected" );
-//            status.setTextColor ( Color.RED );
-            //Scanner Initializations
-            //Handling Runtime BT permissions for Android 12 and higher
-
 
             if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.S ) {
                 if ( ContextCompat.checkSelfPermission ( this ,
@@ -95,17 +93,6 @@ class HomePage extends BaseActivity_RFID {
                 InitSDK ( );
             }
         }
-
-//        if ( isReaderConnected ( ) ) {
-//
-//
-//
-//            status.setText ( "Connected" );
-//            status.setTextColor ( Color.GREEN );
-//        } else {
-//            status.setText ( "Disconnected" );
-//            status.setTextColor ( Color.RED );
-//        }
 
         readMaterial.setOnClickListener ( new View.OnClickListener ( ) {
             @Override
@@ -126,15 +113,15 @@ class HomePage extends BaseActivity_RFID {
             }
         } );
 
-        assetInOutCard.setOnClickListener ( new View.OnClickListener ( ) {
-            @Override
-            public
-            void onClick ( View view ) {
-                Intent intent = new Intent ( HomePage.this ,
-                        Material_In_Out.class );
-                startActivity ( intent );
-            }
-        } );
+//        assetInOutCard.setOnClickListener ( new View.OnClickListener ( ) {
+//            @Override
+//            public
+//            void onClick ( View view ) {
+//                Intent intent = new Intent ( HomePage.this ,
+//                        Material_In_Out.class );
+//                startActivity ( intent );
+//            }
+//        } );
 
         cycleCounting.setOnClickListener ( new View.OnClickListener ( ) {
             @Override
@@ -206,21 +193,6 @@ class HomePage extends BaseActivity_RFID {
     protected
     void onPostResume () {
         super.onPostResume ( );
-//        onResume2 ( );
-        if ( isReaderConnected ( ) ) {
-            connectionStatusViewModel.getconnectStatus ( ).observe ( this ,
-                    new Observer<String> ( ) {
-                        @Override
-                        public
-                        void onChanged ( String s ) {
-                            status.setText ( s );
-//                status.setTextColor ( Color.GREEN );
-                        }
-                    } );
-        } else {
-            status.setText ( "Disconnected" );
-//            status.setTextColor ( Color.RED );
-        }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -240,6 +212,18 @@ class HomePage extends BaseActivity_RFID {
 ////                tagidTV.setText(tagData[0].getTagID () );
 //            }
 //        });
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public  void connectionStatus( ConnectionStatusEvent connectionStatusEvent ){
+        if( connectionStatusEvent.getStatus ()){
+            status.setText ( "Connected" );
+            status.setTextColor ( Color.GREEN );
+        }
+        else{
+            status.setText("Disconnected");
+            status.setTextColor ( Color.RED );
+        }
     }
 
 //    @Override
